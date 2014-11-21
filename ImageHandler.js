@@ -11,14 +11,15 @@ function ImageHandler() {
 
     // Returns the image.
     this.GetImage = function (name) {
-        assert(typeof this.data[name] === Image);
-        assert(gameStarted);
+        //if(!(typeof this.data[name] === Image)) alert("This image does not exist: "+name);
+        if(!this.gameStarted) alert("Game has not started jet - cannot Draw!");
         return this.data[name];
     }
 
     // Add an image to be loaded. If the game has started already, this will fail.
     this.AddImage = function (name, source) {
-        assert(!gameStarted);
+        if (this.gameStarted) alert("Game started! Cannot load!");
+
         this.data[name] = new Image();
         this.data[name].src = source;
 

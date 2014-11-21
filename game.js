@@ -13,12 +13,30 @@ var playTime = 0;
 var globalImageHandler;
 var clickHandler0;
 
+// World
+var world;
+
 // Key press.
 var keyPressCode = -1;
 
-document.onkeydown = function (modifier) {
-    keyPressCode = modifier.keyCode;
-}
+//document.onkeydown = function (modifier) {
+//    keyPressCode = modifier.keyCode;
+//    console.log(keyPressCode);
+//}
+
+// Log all keys being pressed
+var keys = [];
+window.addEventListener("keydown",
+    function (e) {
+        keys[e.keyCode] = true;
+    },
+false);
+
+window.addEventListener('keyup',
+    function (e) {
+        keys[e.keyCode] = false;
+    },
+false);
 
 
 window.onresize = function () {
@@ -33,6 +51,9 @@ function update(timeSinceLastFrame) {
     canvas.onmousedown = function (canvas) {
         clickHandler0.Update(canvas.clientX, canvas.clientY);
     };
+
+    // Check keys.
+
 }
 
 // Draw everything.
@@ -55,6 +76,9 @@ var render = function (timeSinceLastFrame) {
         context.fillText(text, canvas.width - textSize.width - 20, canvas.height - 20);
         context.globalAlpha = 1.0;
     }
+
+    // Draw game
+    world.Draw(context);
 }
 
 // Gameloop.
@@ -71,15 +95,22 @@ function run() {
     requestAnimationFrame(run);
 }
 
-function initialize(){
+function LoadImages() {
+    globalImageHandler.AddImage("Tile6", 'ground.png');
+    globalImageHandler.AddImage("STOCK", 'Stock.png');
+}
+
+function Initialize(){
     clickHandler0 = new ClickHandler();
     globalImageHandler = new ImageHandler();
+    LoadImages();
+    world = new World(0);
 }
 // Cross-browser support for requestAnimationFrame;
 requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame;
 
 var lastFrameTime = Date.now();
 
-initialize();
+Initialize();
 globalImageHandler.WaitForLoad();
 run();
