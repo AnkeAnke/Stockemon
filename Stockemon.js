@@ -14,23 +14,21 @@ var StockemonEnum = {
     Schwert: { type: "w", name: "Schwert", entwicklung: 1 },
     Langschwert: { type: "w", name: "Langschwert", entwicklung: 2 },
     Zweihaender: { type: "w", name: "Zweihaender", entwicklung: 3 },
-
+    GreatSword :{type:"w",name: "Zweihaender",entwicklung: 4},
     //Schilde
     Griff_mit_Brett: { type: "h", name: "Griff mit Brett", entwicklung: 1 },
-    Minischild: { type: "h", name: "Minischild", entwicklung: 2 },
-    Schild: { type: "h", name: "Schild", entwicklung: 3 },
-    Grossschild: { type: "h", name: "Grossschild", entwicklung: 4 },
-    Igelschild: { type: "h", name: "Igelschild", entwicklung: 5 },
+    Schild: { type: "h", name: "Schild", entwicklung: 2 },
+    Grossschild: { type: "h", name: "Grossschild", entwicklung: 3 },
+    Igelschild: { type: "h", name: "Igelschild", entwicklung: 4 },
 
     //Staebe
-    Stab: { type: "t", name: "Stab", entwicklung: 1 },
-    Speer: { type: "t", name: "Speer", entwicklung: 2 },
-    Pike: { type: "t", name: "Pike", entwicklung: 3 },
-    Hellebarde: { type: "t", name: "Hellebarde", entwicklung: 4 },
-    Dreizack: { type: "t", name: "Dreizack", entwicklung: 5 },
+    Speer: { type: "t", name: "Speer", entwicklung: 1 },
+    Hellebarde: { type: "t", name: "Hellebarde", entwicklung: 2 },
+    Dreizack: { type: "t", name: "Dreizack", entwicklung: 3 },
+    Pikspikspiks: { type: "t", name: "Pikspikspiks", entwicklung: 4 },
 
     //Tannenbaum!!!
-    Tannenbaum: { type: "0", name: "Tannenbaum", entwicklung: 6 }
+    Tannenbaum: { type: "0", name: "Tannenbaum", entwicklung: 5 }
 };
 
 
