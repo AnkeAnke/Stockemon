@@ -53,7 +53,7 @@ function update(timeSinceLastFrame) {
     };
 
     // Check keys.
-
+    world.Update(keys, timeSinceLastFrame);
 }
 
 // Draw everything.
@@ -97,7 +97,11 @@ function run() {
 
 function LoadImages() {
     globalImageHandler.AddImage("Tile6", 'ground.png');
-    globalImageHandler.AddImage("STOCK", 'Stock.png');
+    globalImageHandler.AddImage("Stock", 'Stock.png');
+    globalImageHandler.AddImage("UP", "UP.png");
+    globalImageHandler.AddImage("LEFT", "LEFT.png");
+    globalImageHandler.AddImage("DOWN", "DOWN.png");
+    globalImageHandler.AddImage("RIGHT", "RIGHT.png");
 }
 
 function Initialize(){
