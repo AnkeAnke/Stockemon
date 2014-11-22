@@ -56,7 +56,10 @@ function Stockemon(type, entwicklung, level) {
     this.loadValues(type, entwicklung, level);
     this.epTillLvlUp = 10;
     this.epOnDeath = 1000;
+
     this.actions = [4];
+    for (var i = 0; i < 4; ++i) this.actions[i] = new Action();
+
     this.hp_current = this.hp_max;
     this.poison = [];
 

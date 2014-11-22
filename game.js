@@ -15,6 +15,7 @@ var clickHandler0;
 
 // World
 var world;
+var fight;
 
 // Key press.
 var keyPressCode = -1;
@@ -53,7 +54,8 @@ function update(timeSinceLastFrame) {
     };
 
     // Check keys.
-    world.Update(keys, timeSinceLastFrame);
+    //    world.Update(keys, timeSinceLastFrame);
+    fight.Update(keys, timeSinceLastFrame);
 }
 
 // Draw everything.
@@ -78,7 +80,8 @@ var render = function (timeSinceLastFrame) {
     }
 
     // Draw game
-    world.Draw(context);
+    //    world.Draw(context);
+    fight.Draw(context);
 }
 
 // Gameloop.
@@ -104,6 +107,12 @@ function LoadImages() {
     globalImageHandler.AddImage("LEFT", "LEFT.png");
     globalImageHandler.AddImage("DOWN", "DOWN.png");
     globalImageHandler.AddImage("RIGHT", "RIGHT.png");
+
+    globalImageHandler.AddImage("UIleft", "UIleft.png");
+    globalImageHandler.AddImage("UIright", "UIright.png");
+    globalImageHandler.AddImage("UIoff", "UIselection.png");
+    globalImageHandler.AddImage("UIon", "UiselectionOn.png");
+    globalImageHandler.AddImage("UIbar", "bar.png");
     
 
     globalImageHandler.WaitForLoad();
@@ -114,7 +123,11 @@ function Initialize(){
     globalImageHandler = new ImageHandler();
     LoadImages();
 
-    world = new World(globalImageHandler.GetImage("Map"), 0, document);
+    var stockemon = new Stockemon("0", 0, 5);
+
+    world = new World(globalImageHandler.GetImage("Map"), stockemon, document);
+    // DEBUG
+    fight = new Fight(stockemon, new Stockemon("0", 0, 1));
 }
 // Cross-browser support for requestAnimationFrame;
 requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame;

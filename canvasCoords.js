@@ -39,8 +39,8 @@ function DrawScaledPos(context, img, box) {
 
 function DrawScaledText(context, text, x, y, size, align) {
     // 0.8 is a fix to make it look good.
-    var coord = GetCoords(x, y+size*0.8, size,0);
-    context.font = "" + (coord.w).toFixed(0) + "px Arial";
+    var coord = GetCoords(x, y+size, size,0);
+    context.font = "" + size.toFixed(0) + "px Arial";
     context.textAlign = align;
     context.fillText(text, coord.x, coord.y);
 }
