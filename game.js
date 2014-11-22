@@ -16,6 +16,7 @@ var clickHandler0;
 // World
 var world;
 var fight;
+var activeScreen;
 
 // Key press.
 var keyPressCode = -1;
@@ -55,7 +56,7 @@ function update(timeSinceLastFrame) {
 
     // Check keys.
     //    world.Update(keys, timeSinceLastFrame);
-    fight.Update(keys, timeSinceLastFrame);
+    activeScreen.Update(keys, timeSinceLastFrame);
 }
 
 // Draw everything.
@@ -81,7 +82,7 @@ var render = function (timeSinceLastFrame) {
 
     // Draw game
     //    world.Draw(context);
-    fight.Draw(context);
+    activeScreen.Draw(context);
 }
 
 // Gameloop.
@@ -100,8 +101,6 @@ function run() {
 
 function LoadImages() {
     globalImageHandler.AddImage("Map", "map.bmp");
-    globalImageHandler.AddImage("Tile6", 'ground.png');
-    globalImageHandler.AddImage("Tile11", 'enemy0.png');
     globalImageHandler.AddImage("Stock", 'Stock.png');
     globalImageHandler.AddImage("UP", "UP.png");
     globalImageHandler.AddImage("LEFT", "LEFT.png");
@@ -113,7 +112,14 @@ function LoadImages() {
     globalImageHandler.AddImage("UIoff", "UIselection.png");
     globalImageHandler.AddImage("UIon", "UiselectionOn.png");
     globalImageHandler.AddImage("UIbar", "bar.png");
+    globalImageHandler.AddImage("UItext", "UItext.png");
     
+    globalImageHandler.AddImage("gras", "gras.png");
+    globalImageHandler.AddImage("enemy", "enemy.png");
+    globalImageHandler.AddImage("mud", "mud.png");
+    globalImageHandler.AddImage("wall", "wall.png");
+    globalImageHandler.AddImage("pc", "pc.png");
+    globalImageHandler.AddImage("heal", "heal.png");
 
     globalImageHandler.WaitForLoad();
 }
@@ -125,9 +131,10 @@ function Initialize(){
 
     var stockemon = new Stockemon("0", 0, 5);
 
-    world = new World(globalImageHandler.GetImage("Map"), stockemon, document);
+    world = new World(stockemon, document);
     // DEBUG
     fight = new Fight(stockemon, new Stockemon("0", 0, 1));
+    activeScreen = fight;
 }
 // Cross-browser support for requestAnimationFrame;
 requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame;

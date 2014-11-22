@@ -10,6 +10,7 @@ function Fight(stockemon, enemy) {
     
     this.selected = 1;
     this.countdownKeys = 0;
+    this.text = "Oh, ein " + enemy.name;
 
     this.fightStatus = FightStatus.MainMenu;
     this.numTitles = 0;
@@ -102,7 +103,7 @@ function Fight(stockemon, enemy) {
         for (var i = 0; i < this.numTitles; ++i) {
             var pos = new Object();
             pos.x = 0;
-            pos.y = 1000 - ((i + 1) * 200);
+            pos.y = 1000 - ((i + 2) * 200);
             pos.w = 500;
             pos.h = 200;
             var img = this.selected == i ? globalImageHandler.GetImage("UIon") : globalImageHandler.GetImage("UIoff");
@@ -111,6 +112,14 @@ function Fight(stockemon, enemy) {
             DrawScaledText(canvas, titles[i], 50, pos.y + 50, 70, "left");
             canvas.fillStyle = "#ff9001";
         }
+        // Draw text box
+        ui.x = 0;
+        ui.y = 800;
+        ui.w = 1200;
+        ui.h = 200;
+        DrawScaledPos(canvas, globalImageHandler.GetImage("UItext"), ui);
+        DrawScaledText(canvas, this.text, 30, 830, 50, "left");
+
         canvas.fillStyle = "#ffffff";
     }
 

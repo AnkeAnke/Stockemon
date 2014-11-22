@@ -1,4 +1,4 @@
-﻿function nothing() { }//console.log("nothing! :)"); }
+﻿function nothing(world) { }//console.log("nothing! :)"); }
 
 function walkable() { return true; }
 function solid(){return false;}
@@ -9,37 +9,51 @@ function OnGrasWalk(level){
     return true;
 }
 
-function OnHealClick() {
+function OnHealClick(world) {
     //TODO: heal
+
 }
 
-function OnPCClick() {
+function OnPCClick(world) {
     //TODO: load and save
 }
 
-function OnEnemyClick(level) {
+function OnEnemyClick(level, world) {
     //TODO: FIGHT!
     //alert("Enemy!");
 }
+function Enemy0(world) { OnEnemyClick(0, world); }
+function Enemy1(world) { OnEnemyClick(1, world); }
+function Enemy2(world) { OnEnemyClick(2, world); }
+function Enemy3(world) { OnEnemyClick(3, world); }
+function Enemy4(world) { OnEnemyClick(4, world); }
+function Enemy5(world) { OnEnemyClick(5, world); }
+
+function Gras0() {return OnGrasWalk(0);}
+function Gras1() {return OnGrasWalk(1);}
+function Gras2() {return OnGrasWalk(2);}
+function Gras3() {return OnGrasWalk(3);}
+function Gras4() {return OnGrasWalk(4);}
+function Gras5() {return OnGrasWalk(5);}
 
 var TileType = {
-    GRASS0: { value: 0, OnClick: nothing, OnWalk: OnGrasWalk(0),  r: 0, g: 50, b: 0 },
-    GRASS1: { value: 1, OnClick: nothing, OnWalk: OnGrasWalk(1),  r: 0, g: 90, b: 0 },
-    GRASS2: { value: 2, OnClick: nothing, OnWalk: OnGrasWalk(2),  r: 0, g: 130, b: 0 },
-    GRASS3: { value: 3, OnClick: nothing, OnWalk: OnGrasWalk(3),  r: 0, g: 170, b: 0 },
-    GRASS4: { value: 4, OnClick: nothing, OnWalk: OnGrasWalk(4),  r: 0, g: 210, b: 0 },
-    GRASS5: { value: 5, OnClick: nothing, OnWalk: OnGrasWalk(5),  r: 0, g: 250, b: 0 },
-    MUD:    { value: 6,  OnClick: nothing, OnWalk: walkable ,     r: 255, g:255, b:255},
-    WATER:  { value: 7,  OnClick: nothing, OnWalk: solid    ,     r: 0, g: 0, b: 255},
-    WALL:   { value: 8,  OnClick: nothing, OnWalk: solid    ,     r: 0, g: 0, b: 0},
-    HEAL:   { value: 9,  OnClick: OnHealClick, OnWalk: solid,     r: 0, g: 255, b:255},
-    PC:     { value: 10, OnClick: OnHealClick, OnWalk: solid,     r: 188, g: 128, b: 128},
-    ENEMY0: { value: 11, OnClick: OnEnemyClick(0), OnWalk: solid, r: 50, g: 0, b: 0 },
-    ENEMY1: { value: 12, OnClick: OnEnemyClick(1), OnWalk: solid, r: 90, g: 0, b: 0 },
-    ENEMY2: { value: 13, OnClick: OnEnemyClick(2), OnWalk: solid, r: 130, g: 0, b: 0 },
-    ENEMY3: { value: 14, OnClick: OnEnemyClick(3), OnWalk: solid, r: 170, g: 0, b: 0 },
-    ENEMY4: { value: 15, OnClick: OnEnemyClick(4), OnWalk: solid, r: 210, g: 0, b: 0 },
-    ENEMY5: { value: 16, OnClick: OnEnemyClick(5), OnWalk: solid, r: 250, g: 0, b: 0 }
+    GRASS0: { height: 1.0, name: "gras",  value: 0, OnClick: nothing, OnWalk: Gras0,  r: 0, g: 50, b: 0 },
+    GRASS1: { height: 1.0, name: "gras",  value: 1, OnClick: nothing, OnWalk: Gras1,  r: 0, g: 90, b: 0 },
+    GRASS2: { height: 1.0, name: "gras",  value: 2, OnClick: nothing, OnWalk: Gras2,  r: 0, g: 130, b: 0 },
+    GRASS3: { height: 1.0, name: "gras",  value: 3, OnClick: nothing, OnWalk: Gras3,  r: 0, g: 170, b: 0 },
+    GRASS4: { height: 1.0, name: "gras",  value: 4, OnClick: nothing, OnWalk: Gras4,  r: 0, g: 210, b: 0 },
+    GRASS5: { height: 1.0, name: "gras",  value: 5, OnClick: nothing, OnWalk: Gras5,  r: 0, g: 250, b: 0 },
+    MUD:    { height: 1.0, name: "mud",   value: 6,  OnClick: nothing, OnWalk: walkable ,     r: 255, g:255, b:255},
+    WATER:  { height: 1.0, name: "water", value: 7,  OnClick: nothing, OnWalk: solid    ,     r: 0, g: 0, b: 255},
+    WALL:   { height: 1.5, name: "wall", value: 8,  OnClick: nothing, OnWalk: solid    ,     r: 0, g: 0, b: 0},
+    HEAL:   { height: 1.5, name: "heal", value: 9,  OnClick: OnHealClick, OnWalk: solid,     r: 0, g: 255, b:255},
+    PC:     { height: 1.5, name: "pc", value: 10, OnClick: OnHealClick, OnWalk: solid,     r: 128, g: 128, b: 128},
+    ENEMY0: { height: 1.5, name: "enemy", value: 11, OnClick: Enemy0, OnWalk: solid, r: 50, g: 0, b: 0 },
+    ENEMY1: { height: 1.5, name: "enemy", value: 12, OnClick: Enemy1, OnWalk: solid, r: 90, g: 0, b: 0 },
+    ENEMY2: { height: 1.5, name: "enemy", value: 13, OnClick: Enemy2, OnWalk: solid, r: 130, g: 0, b: 0 },
+    ENEMY3: { height: 1.5, name: "enemy", value: 14, OnClick: Enemy3, OnWalk: solid, r: 170, g: 0, b: 0 },
+    ENEMY4: { height: 1.5, name: "enemy", value: 15, OnClick: Enemy4, OnWalk: solid, r: 210, g: 0, b: 0 },
+    ENEMY5: { height: 1.5, name: "enemy", value: 16, OnClick: Enemy5, OnWalk: solid, r: 250, g: 0, b: 0 }
 };
 
 var Dir = {
@@ -54,14 +68,14 @@ function Tile(type){
 
 const TileSize = 50;
 // Steps per second.
-const speed = 3;
+const speed = 4;
 
-function World(worldImage, stockemon, document) {
-    this.worldImage = worldImage;
+function World(stockemon, document) {
+    this.worldImage = globalImageHandler.GetImage("Map");
 
     this.MapSizeX = 50;//worldImage.width;;
     this.MapSizeY = 300;//worldImage.height;
-    console.log("" + worldImage.width);
+    //console.log(this.worldImage.width);
 
     this.playerX = 5;
     this.playerY = 5;
@@ -76,18 +90,21 @@ function World(worldImage, stockemon, document) {
     canvas.width = this.MapSizeX;
     canvas.height = this.MapSizeY;
     //alert("" + canvas.width + ", " + canvas.height);
-    canvas.getContext('2d').drawImage(worldImage, 0, 0, this.MapSizeX, this.MapSizeY);
+    canvas.getContext('2d').drawImage(this.worldImage, 0, 0, this.MapSizeX, this.MapSizeY);
 
 
     this.map = [];
     for (var x = 0; x < this.MapSizeX; ++x) {
         this.map[x] = [];
         for (var y = 0; y < this.MapSizeY; ++y) {
-            var pixelData = canvas.getContext('2d').getImageData(x, y, 1, 1).data;
             this.map[x][y] = new Tile(TileType.MUD);
-            if (pixelData[0] > 10) {
-                this.map[x][y] = new Tile(TileType.ENEMY0);
-                //alert("ENEMY0");
+            var pix = canvas.getContext('2d').getImageData(x, y, 1, 1).data;
+            for (var typeKey in TileType) {
+                var type = TileType[typeKey];
+                if (pix[0] == type.r&& pix[1]==type.g && pix[2] == type.b){
+                    this.map[x][y] = new Tile(type);
+                    break;
+                }
             }
         }
     }
@@ -106,13 +123,26 @@ function World(worldImage, stockemon, document) {
         var diffY = Math.ceil(window.innerHeight / tileCoord.y + 1);
 
         for (var x = Math.max(this.playerX - diffX, 0); x < Math.min(this.playerX + diffX, this.MapSizeX); ++x) {
-            for (var y = Math.max(this.playerY - diffY, 0); y < Math.min(this.playerY + diffY, this.MapSizeY); ++y) {
-                var img = globalImageHandler.GetImage("Tile" + this.map[x][y].type.value);
+            for (var y = Math.max(this.playerY - diffY, 0) ; y < Math.min(this.playerY + diffY, this.MapSizeY) ; ++y) {
+                if (this.map[x][y].type.height > 1)
+                    continue;
+                var img = globalImageHandler.GetImage(this.map[x][y].type.name);
                 DrawScaledPos(canvas, img, new Box(x * TileSize - upperLeftPos.x, y * TileSize - upperLeftPos.y, TileSize, TileSize));
             }
         }
         // Compute the players position - interpolate linearly.
-        DrawScaledPos(canvas, globalImageHandler.GetImage("Stock"), new Box(playerCoord.x - upperLeftPos.x, playerCoord.y - upperLeftPos.y, TileSize, TileSize));
+        DrawScaledPos(canvas, globalImageHandler.GetImage(this.stockemon.name), new Box(playerCoord.x - upperLeftPos.x, playerCoord.y - upperLeftPos.y, TileSize, TileSize));
+        
+        // Drawing heigher objects
+        for (var x = Math.max(this.playerX - diffX, 0) ; x < Math.min(this.playerX + diffX, this.MapSizeX) ; ++x) {
+            for (var y = Math.max(this.playerY - diffY, 0) ; y < Math.min(this.playerY + diffY, this.MapSizeY) ; ++y) {
+                if (this.map[x][y].type.height <= 1)
+                    continue;
+                var img = globalImageHandler.GetImage(this.map[x][y].type.name);
+                DrawScaledPos(canvas, img, new Box(x * TileSize - upperLeftPos.x, y * TileSize - upperLeftPos.y - (this.map[x][y].type.height - 1) * TileSize, TileSize, TileSize * this.map[x][y].type.height));
+            }
+        }
+        // Arrow
         DrawScaledPos(canvas, globalImageHandler.GetImage(this.direction.dir), new Box(playerCoord.x - 0.5 * TileSize - upperLeftPos.x, playerCoord.y - 0.5 * TileSize - upperLeftPos.y, TileSize * 2, TileSize * 2));
 
     }
@@ -139,7 +169,7 @@ function World(worldImage, stockemon, document) {
         if (keys[13] || keys[32]) {
             if (this.playerX + this.direction.x >= 0 && this.playerX + this.direction.x < this.MapSizeX &&
             this.playerY + this.direction.y >= 0 && this.playerY + this.direction.y < this.MapSizeY){
-                this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnClick();   
+                return this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnClick(this);   
             }
         }
         if (keys[37] || keys["A".charCodeAt(0)]) {
