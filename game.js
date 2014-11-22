@@ -96,19 +96,25 @@ function run() {
 }
 
 function LoadImages() {
+    globalImageHandler.AddImage("Map", "map.bmp");
     globalImageHandler.AddImage("Tile6", 'ground.png');
+    globalImageHandler.AddImage("Tile11", 'enemy0.png');
     globalImageHandler.AddImage("Stock", 'Stock.png');
     globalImageHandler.AddImage("UP", "UP.png");
     globalImageHandler.AddImage("LEFT", "LEFT.png");
     globalImageHandler.AddImage("DOWN", "DOWN.png");
     globalImageHandler.AddImage("RIGHT", "RIGHT.png");
+    
+
+    globalImageHandler.WaitForLoad();
 }
 
 function Initialize(){
     clickHandler0 = new ClickHandler();
     globalImageHandler = new ImageHandler();
     LoadImages();
-    world = new World(0);
+
+    world = new World(globalImageHandler.GetImage("Map"), 0, document);
 }
 // Cross-browser support for requestAnimationFrame;
 requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame;
@@ -116,5 +122,4 @@ requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnim
 var lastFrameTime = Date.now();
 
 Initialize();
-globalImageHandler.WaitForLoad();
 run();

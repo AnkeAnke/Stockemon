@@ -1,4 +1,4 @@
-﻿function nothing() { }
+﻿function nothing() { }//console.log("nothing! :)"); }
 
 function walkable() { return true; }
 function solid(){return false;}
@@ -19,26 +19,27 @@ function OnPCClick() {
 
 function OnEnemyClick(level) {
     //TODO: FIGHT!
+    //alert("Enemy!");
 }
 
 var TileType = {
-    GRASS0: { value: 0,  OnClick: nothing, OnWalk: OnGrasWalk(0) },
-    GRASS1: { value: 1,  OnClick: nothing, OnWalk: OnGrasWalk(1) },
-    GRASS2: { value: 2,  OnClick: nothing, OnWalk: OnGrasWalk(2) },
-    GRASS3: { value: 3,  OnClick: nothing, OnWalk: OnGrasWalk(3) },
-    GRASS4: { value: 4,  OnClick: nothing, OnWalk: OnGrasWalk(4) },
-    GRASS5: { value: 5,  OnClick: nothing, OnWalk: OnGrasWalk(5) },
-    MUD:    { value: 6,  OnClick: nothing, OnWalk: walkable },
-    WATER:  { value: 7,  OnClick: nothing, OnWalk: solid },
-    WALL:   { value: 8,  OnClick: nothing, OnWalk: solid },
-    HEAL:   { value: 9,  OnClick: OnHealClick, OnWalk: solid },
-    PC:     { value: 10, OnClick: OnHealClick, OnWalk: solid },
-    ENEMY0: { value: 11, OnClick: OnEnemyClick(0), OnWalk: solid },
-    ENEMY1: { value: 12, OnClick: OnEnemyClick(1), OnWalk: solid },
-    ENEMY2: { value: 13, OnClick: OnEnemyClick(2), OnWalk: solid },
-    ENEMY3: { value: 14, OnClick: OnEnemyClick(3), OnWalk: solid },
-    ENEMY4: { value: 15, OnClick: OnEnemyClick(4), OnWalk: solid },
-    ENEMY5: { value: 16, OnClick: OnEnemyClick(5), OnWalk: solid }
+    GRASS0: { value: 0, OnClick: nothing, OnWalk: OnGrasWalk(0),  r: 0, g: 50, b: 0 },
+    GRASS1: { value: 1, OnClick: nothing, OnWalk: OnGrasWalk(1),  r: 0, g: 90, b: 0 },
+    GRASS2: { value: 2, OnClick: nothing, OnWalk: OnGrasWalk(2),  r: 0, g: 130, b: 0 },
+    GRASS3: { value: 3, OnClick: nothing, OnWalk: OnGrasWalk(3),  r: 0, g: 170, b: 0 },
+    GRASS4: { value: 4, OnClick: nothing, OnWalk: OnGrasWalk(4),  r: 0, g: 210, b: 0 },
+    GRASS5: { value: 5, OnClick: nothing, OnWalk: OnGrasWalk(5),  r: 0, g: 250, b: 0 },
+    MUD:    { value: 6,  OnClick: nothing, OnWalk: walkable ,     r: 255, g:255, b:255},
+    WATER:  { value: 7,  OnClick: nothing, OnWalk: solid    ,     r: 0, g: 0, b: 255},
+    WALL:   { value: 8,  OnClick: nothing, OnWalk: solid    ,     r: 0, g: 0, b: 0},
+    HEAL:   { value: 9,  OnClick: OnHealClick, OnWalk: solid,     r: 0, g: 255, b:255},
+    PC:     { value: 10, OnClick: OnHealClick, OnWalk: solid,     r: 188, g: 128, b: 128},
+    ENEMY0: { value: 11, OnClick: OnEnemyClick(0), OnWalk: solid, r: 50, g: 0, b: 0 },
+    ENEMY1: { value: 12, OnClick: OnEnemyClick(1), OnWalk: solid, r: 90, g: 0, b: 0 },
+    ENEMY2: { value: 13, OnClick: OnEnemyClick(2), OnWalk: solid, r: 130, g: 0, b: 0 },
+    ENEMY3: { value: 14, OnClick: OnEnemyClick(3), OnWalk: solid, r: 170, g: 0, b: 0 },
+    ENEMY4: { value: 15, OnClick: OnEnemyClick(4), OnWalk: solid, r: 210, g: 0, b: 0 },
+    ENEMY5: { value: 16, OnClick: OnEnemyClick(5), OnWalk: solid, r: 250, g: 0, b: 0 }
 };
 
 var Dir = {
@@ -55,11 +56,12 @@ const TileSize = 50;
 // Steps per second.
 const speed = 3;
 
-function World(worldImage, stockemon) {
+function World(worldImage, stockemon, document) {
     this.worldImage = worldImage;
 
-    this.MapSizeX = 100;
-    this.MapSizeY = 100;
+    this.MapSizeX = 50;//worldImage.width;;
+    this.MapSizeY = 300;//worldImage.height;
+    console.log("" + worldImage.width);
 
     this.playerX = 5;
     this.playerY = 5;
@@ -68,11 +70,25 @@ function World(worldImage, stockemon) {
 
     this.stockemon = stockemon;
 
+    // Load map from bmp
+    // Create a canvas
+    var canvas = document.createElement("canvas");
+    canvas.width = this.MapSizeX;
+    canvas.height = this.MapSizeY;
+    //alert("" + canvas.width + ", " + canvas.height);
+    canvas.getContext('2d').drawImage(worldImage, 0, 0, this.MapSizeX, this.MapSizeY);
+
+
     this.map = [];
     for (var x = 0; x < this.MapSizeX; ++x) {
         this.map[x] = [];
         for (var y = 0; y < this.MapSizeY; ++y) {
+            var pixelData = canvas.getContext('2d').getImageData(x, y, 1, 1).data;
             this.map[x][y] = new Tile(TileType.MUD);
+            if (pixelData[0] > 10) {
+                this.map[x][y] = new Tile(TileType.ENEMY0);
+                //alert("ENEMY0");
+            }
         }
     }
 
@@ -85,8 +101,12 @@ function World(worldImage, stockemon) {
         upperLeftPos.x = playerCoord.x - 0.5 * (DefaultWidth - TileSize);
         upperLeftPos.y = playerCoord.y - 0.5 * (DefaultHeight - TileSize);
 
-        for (var x = 0; x < this.MapSizeX; ++x) {
-            for (var y = 0; y < this.MapSizeY; ++y) {
+        var tileCoord = GetCoords(TileSize, TileSize);
+        var diffX = Math.ceil(window.innerWidth / tileCoord.x + 1);
+        var diffY = Math.ceil(window.innerHeight / tileCoord.y + 1);
+
+        for (var x = Math.max(this.playerX - diffX, 0); x < Math.min(this.playerX + diffX, this.MapSizeX); ++x) {
+            for (var y = Math.max(this.playerY - diffY, 0); y < Math.min(this.playerY + diffY, this.MapSizeY); ++y) {
                 var img = globalImageHandler.GetImage("Tile" + this.map[x][y].type.value);
                 DrawScaledPos(canvas, img, new Box(x * TileSize - upperLeftPos.x, y * TileSize - upperLeftPos.y, TileSize, TileSize));
             }
@@ -116,7 +136,12 @@ function World(worldImage, stockemon) {
         //up = 38
         //right = 39
         //down = 40
-
+        if (keys[13] || keys[32]) {
+            if (this.playerX + this.direction.x >= 0 && this.playerX + this.direction.x < this.MapSizeX &&
+            this.playerY + this.direction.y >= 0 && this.playerY + this.direction.y < this.MapSizeY){
+                this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnClick();   
+            }
+        }
         if (keys[37] || keys["A".charCodeAt(0)]) {
             this.direction = Dir.LEFT;
         } else
@@ -135,6 +160,7 @@ function World(worldImage, stockemon) {
             this.playerY + this.direction.y >= 0 && this.playerY + this.direction.y < this.MapSizeY &&
             this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnWalk()) {
             this.interpolation = 0;
+            console.log("" + (this.playerX + this.direction.x) + ", " + (this.playerY + this.direction.y));
         }
             
 

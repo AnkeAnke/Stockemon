@@ -1,6 +1,8 @@
 ﻿// global, so images can raise this value.
 var NumLoadedImages = 0;
 
+var MapSize = 0;
+
 // An object loading and organizing all images. Please create one only.
 function ImageHandler() {
     // Has the drawing been started jet?
@@ -27,15 +29,21 @@ function ImageHandler() {
         this.numImages++;
         this.data[name].addEventListener("load", function () {
             NumLoadedImages++;
+            if (this.src == "map.bmp") {
+                MapSize = new Object();
+                MapSize.x = this.width;
+                MapSize.y = this.height;
+                alert("Loaded map");
+            }
         }, false);
     }
-
-    this.WaitForLoad = function () {
-        function waitUntilImageIsValid() {
-            if (this.numImages != NumLoadedImages) {
-                setTimeout(waitUntilImageIsValid, 500);
-            }
+    function waitUntilImageIsValid() {
+        if (this.numImages != NumLoadedImages) {
+            setTimeout(waitUntilImageIsValid, 500);
         }
+    }
+    this.WaitForLoad = function () {
+        
         waitUntilImageIsValid();
         this.gameStarted = true;
     }
