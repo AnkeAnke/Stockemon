@@ -106,8 +106,8 @@ function World(stockemon, document) {
     this.MapSizeY = 300;//worldImage.height;
     //console.log(this.worldImage.width);
 
-    this.playerX = 40;
-    this.playerY = 205;
+    this.playerX = 25;
+    this.playerY = 295;
     this.direction = Dir.UP;
     this.interpolation = -1;
 

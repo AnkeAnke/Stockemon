@@ -181,6 +181,9 @@ function Stockemon(type, entwicklung, level) {
         this.heal();
         this.epTillLvlUp = parseInt(septolvlup);
         this.lvl = slvl;
+        this.type = stype;
+
+        
 
         if (n == "GerdLiebtKekse") {
             this.evolution = 5;
@@ -199,6 +202,13 @@ function Stockemon(type, entwicklung, level) {
         }
         if (n == "StockStockWerIstDa") {
             this.evolution = 0;
+        }
+
+        for (var stockKey in StockemonEnum) {
+            var stock = StockemonEnum[stockKey];
+            if (stock.type == this.type && stock.entwicklung == this.evolution) {
+                this.name = stock.name;
+            }
         }
     };
 };
