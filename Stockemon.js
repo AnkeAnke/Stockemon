@@ -7,7 +7,7 @@ var typeEnum = {
 };
 
 var StockemonEnum = {
-    Stock: { type: "0", entwicklung: 0, name: "Stock", atk: 3, def: 1, luc: 1, hp_max: 10, g: "m" },
+    Stock: { type: "0", entwicklung: 0, name: "Stock", atk: 3, def: 1, luc: 1, hp_max: 10, g: "m" , action: "Stupsen"},
     
     //Schwerter
     Schwert: { type: "w", name: "Schwert", entwicklung: 1, g: "n" },
@@ -27,7 +27,7 @@ var StockemonEnum = {
     Pikspikspiks: { type: "t", name: "Aua Pieks", entwicklung: 4, g: "n" },
 
     //Tannenbaum!!!
-    Tannenbaum: { type: "0", name: "Tannenbaum", entwicklung: 5, g: "m" }
+    Tannenbaum: { type: "0", name: "Tannenbaum", entwicklung: 5, g: "m", atk: 42, des: 42, luc, 42, hp_max: 4242, action: "Ho!Ho!Ho!"}
 };
 
 
@@ -45,19 +45,27 @@ function Stockemon(type, entwicklung, level) {
             if (stock.type == type && stock.entwicklung == entwicklung) {
                 this.hp_max = (stock.hp_max * Math.pow(multiplicator, level)).toFixed(0);
                 this.atk = (stock.atk * Math.pow(multiplicator, level)).toFixed(0);
-                this.def = (stock.def* Math.pow(multiplicator, level)).toFixed(0);
+                this.def = (stock.def * Math.pow(multiplicator, level)).toFixed(0);
                 this.luc = (stock.luc * Math.pow(multiplicator, level)).toFixed(0);
                 this.epTillLvlUp = Math.floor(10 * Math.pow(multiplicator, level));
                 this.epOnDeath = Math.floor(2 * Math.pow(multiplicator, level));
                 this.name = stock.name;
                 this.gender = stock.g;
+                this.actions = [4];
+                for (var i = 0; i < 4; ++i) this.actions[i] = new Action(actionEnum.Stupsen); //First set all to default
+                var actionsindex = 1;
+                for (var actionKey in Action.ActionEnum) {
+                    var action = ActionEnum[actionKey];
+                    if ((type == action[type] || action[type] == "0") && entwicklung >= action[neededEvo] && level >= action[neededLvl]) {
+                        this.actions[actionindex] = new Action(action);
+                    }
+                }
             }
         }
     }
     this.loadValues(type, entwicklung, level);
 
-    this.actions = [4];
-    for (var i = 0; i < 4; ++i) this.actions[i] = new Action();
+    
 
     this.hp_current = this.hp_max;
     this.poison = [];
@@ -186,14 +194,3 @@ function Stockemon(type, entwicklung, level) {
     };
 };
 
-/*
-function Stockemon(codenumber) {
-    var typelevel = getTypeLevel(codenumber);
-    if (typelevel == []) {
-        return 0; //or throw exception or whatever
-    }
-    else {
-        return Stockemon(typelevel[0],typelevel[1]);
-    }
-}
-*/
