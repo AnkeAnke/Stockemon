@@ -7,28 +7,27 @@ var typeEnum = {
 };
 
 var StockemonEnum = {
-    Stock: { type: "0", entwicklung: 0, name: "Stock", atk: 3, def: 0, luc: 1, hp_max: 10 },
+    Stock: { type: "0", entwicklung: 0, name: "Stock", atk: 3, def: 1, luc: 1, hp_max: 10, g: "m" },
     
-    //TODO Restliche Stufen einfuegen und vervollstaendigen
     //Schwerter
-    Schwert: { type: "w", name: "Schwert", entwicklung: 1 },
-    Langschwert: { type: "w", name: "Langschwert", entwicklung: 2 },
-    Zweihaender: { type: "w", name: "Zweihaender", entwicklung: 3 },
-    GreatSword :{type:"w",name: "Zweihaender",entwicklung: 4},
+    Schwert: { type: "w", name: "Schwert", entwicklung: 1, g: "n" },
+    Langschwert: { type: "w", name: "Langschwert", entwicklung: 2, g: "n" },
+    Zweihaender: { type: "w", name: "Zweihaender", entwicklung: 3, g: "m" },
+    GreatSword: { type: "w", name: "Aua Aua", entwicklung: 4, g: "n" },
     //Schilde
-    Griff_mit_Brett: { type: "h", name: "Griff mit Brett", entwicklung: 1 },
-    Schild: { type: "h", name: "Schild", entwicklung: 2 },
-    Grossschild: { type: "h", name: "Grossschild", entwicklung: 3 },
-    Igelschild: { type: "h", name: "Igelschild", entwicklung: 4 },
+    Griff_mit_Brett: { type: "h", name: "Griff mit Brett", entwicklung: 1, g: "m" },
+    Schild: { type: "h", name: "Schild", entwicklung: 2, g: "n" },
+    Grossschild: { type: "h", name: "Grossschild", entwicklung: 3, g: "n" },
+    Igelschild: { type: "h", name: "Pieks Pieks", entwicklung: 4, g: "n" },
 
     //Staebe
-    Speer: { type: "t", name: "Speer", entwicklung: 1 },
-    Hellebarde: { type: "t", name: "Hellebarde", entwicklung: 2 },
-    Dreizack: { type: "t", name: "Dreizack", entwicklung: 3 },
-    Pikspikspiks: { type: "t", name: "Pikspikspiks", entwicklung: 4 },
+    Speer: { type: "t", name: "Speer", entwicklung: 1, g: "m" },
+    Hellebarde: { type: "t", name: "Hellebarde", entwicklung: 2, g: "f" },
+    Dreizack: { type: "t", name: "Dreizack", entwicklung: 3, g: "m" },
+    Pikspikspiks: { type: "t", name: "Aua Pieks", entwicklung: 4, g: "n" },
 
     //Tannenbaum!!!
-    Tannenbaum: { type: "0", name: "Tannenbaum", entwicklung: 5 }
+    Tannenbaum: { type: "0", name: "Tannenbaum", entwicklung: 5, g: "m" }
 };
 
 
@@ -39,6 +38,7 @@ function Stockemon(type, entwicklung, level) {
     var multiplicator = 1.05;
     this.type = type;
     this.lvl = level;
+    this.evolution = entwicklung;
     this.loadValues = function (type, entwicklung, level) {
         for (var stockKey in StockemonEnum) {
             var stock = StockemonEnum[stockKey];
@@ -47,13 +47,14 @@ function Stockemon(type, entwicklung, level) {
                 this.atk = (stock.atk * Math.pow(multiplicator, level)).toFixed(0);
                 this.def = (stock.def* Math.pow(multiplicator, level)).toFixed(0);
                 this.luc = (stock.luc * Math.pow(multiplicator, level)).toFixed(0);
+                this.epTillLvlUp = Math.floor(10 * Math.pow(multiplicator, level));
+                this.epOnDeath = Math.floor(2 * Math.pow(multiplicator, level));
                 this.name = stock.name;
+                this.gender = stock.g;
             }
         }
     }
     this.loadValues(type, entwicklung, level);
-    this.epTillLvlUp = 10;
-    this.epOnDeath = 1000;
 
     this.actions = [4];
     for (var i = 0; i < 4; ++i) this.actions[i] = new Action();
@@ -74,10 +75,6 @@ function Stockemon(type, entwicklung, level) {
         //TODO Interface function: Just healed
     }
 
-    this.attack = function(index) {
-        return actions[index];
-    }
-
     this.setAction = function (action, index) {
         actions[index] = action;
     }
@@ -90,7 +87,7 @@ function Stockemon(type, entwicklung, level) {
     }
 
     this.onDamage = function (amount) {
-        this.hp_current -= amount;
+        this.hp_current -= amount / this.def;
         //TODO add Interface function (display damage taken)
         if (this.hp_current < 0) {
             this.onDeath();
@@ -99,11 +96,30 @@ function Stockemon(type, entwicklung, level) {
 
     this.onDeath = function () {
         //TODO Interface function (player died action)
+        this.hp_current = 0;
         this.onLostFight();
     }
 
     this.onLostFight = function () {
         //TODO Interface function
+    }
+
+    this.attackEnemy = function(action, enemy){
+        var damage = action.dmg * this.atk * ((Math.random() * this.luc - 0.5) * 0.05 + 1);
+        damage = damage.toFixed();
+        enemy.onDamage(damage);
+
+        return damage;
+    }
+
+    this.getEP = function (ep) {
+        this.epTillLvlUp -= ep;
+
+        while (this.epTillLvlUp <= 0) {
+            var add = this.epTillLvlUp;
+            this.loadValues(this.type, this.evolution, ++this.lvl);
+            this.epTillLvlUp += add;
+        }
     }
 
 };

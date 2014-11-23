@@ -159,7 +159,7 @@ function World(stockemon, document) {
         }
 
         if (this.interpolation >= 0) {
-            return;
+            return this;
         }
         
         //left = 37
@@ -168,8 +168,9 @@ function World(stockemon, document) {
         //down = 40
         if (keys[13] || keys[32]) {
             if (this.playerX + this.direction.x >= 0 && this.playerX + this.direction.x < this.MapSizeX &&
-            this.playerY + this.direction.y >= 0 && this.playerY + this.direction.y < this.MapSizeY){
-                return this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnClick(this);   
+            this.playerY + this.direction.y >= 0 && this.playerY + this.direction.y < this.MapSizeY) {
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                return this;///this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnClick(this);
             }
         }
         if (keys[37] || keys["A".charCodeAt(0)]) {
@@ -184,15 +185,15 @@ function World(stockemon, document) {
                     if (keys[40] || keys["S".charCodeAt(0)]) {
                         this.direction = Dir.DOWN;
                     } else
-                        return;
+                        return this;
         // Is the next tile existing and walkable?
         if (this.playerX + this.direction.x >= 0 && this.playerX + this.direction.x < this.MapSizeX &&
             this.playerY + this.direction.y >= 0 && this.playerY + this.direction.y < this.MapSizeY &&
             this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnWalk()) {
             this.interpolation = 0;
-            console.log("" + (this.playerX + this.direction.x) + ", " + (this.playerY + this.direction.y));
         }
-            
+        
+        return this;
 
 
     }

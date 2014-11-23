@@ -56,7 +56,7 @@ function update(timeSinceLastFrame) {
 
     // Check keys.
     //    world.Update(keys, timeSinceLastFrame);
-    activeScreen.Update(keys, timeSinceLastFrame);
+    activeScreen = activeScreen.Update(keys, timeSinceLastFrame);
 }
 
 // Draw everything.
@@ -133,7 +133,7 @@ function Initialize(){
 
     world = new World(stockemon, document);
     // DEBUG
-    fight = new Fight(stockemon, new Stockemon("0", 0, 1));
+    fight = new Fight(stockemon, new Stockemon("0", 0, 1), world);
     activeScreen = fight;
 }
 // Cross-browser support for requestAnimationFrame;

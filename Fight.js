@@ -1,16 +1,21 @@
 ﻿var FightStatus = {
     MainMenu: {numTitles: 2},
     Actions: { numTitles: 4 },
-    InFight: {numTitles: 1}
+    InFightAtk: { numTitles: 1 },
+    InFightDef: { numTitles: 1 },
+    OnWin: { numTitles: 1 },
+    OnLoose: { numTitles: 1 },
+    OnReturn: { numTitles: 1 }
 };
 
-function Fight(stockemon, enemy) {
+function Fight(stockemon, enemy, world) {
     this.stockemon = stockemon;
     this.enemy = enemy;
+    this.world = world;
     
     this.selected = 1;
     this.countdownKeys = 0;
-    this.text = "Oh, ein " + enemy.name;
+    this.text = "Oh, ein" + (enemy.gender == "f"? "e " : " ") + enemy.name + "!\nZeit für eine Tracht Prügel!";
 
     this.fightStatus = FightStatus.MainMenu;
     this.numTitles = 0;
@@ -53,7 +58,8 @@ function Fight(stockemon, enemy) {
         pic.y = 100;
         pic.w = 400;
         pic.h = 400;
-        DrawScaledPos(canvas, globalImageHandler.GetImage(this.enemy.name), pic);
+        if(this.fightStatus != FightStatus.OnWin)
+            DrawScaledPos(canvas, globalImageHandler.GetImage(this.enemy.name), pic);
 
         // Draw the own stock's status
         partHP = this.stockemon.hp_current / this.stockemon.hp_max;
@@ -63,7 +69,8 @@ function Fight(stockemon, enemy) {
         bar.y = 675;
         bar.w = 500 * partHP;
         bar.h = 30;
-        DrawScaledPos(canvas, globalImageHandler.GetImage("UIbar"), bar);
+        if(this.fightStatus != FightStatus.OnLoose)
+            DrawScaledPos(canvas, globalImageHandler.GetImage("UIbar"), bar);
 
         var ui = {};
         ui.x = 1300;
@@ -74,6 +81,7 @@ function Fight(stockemon, enemy) {
         DrawScaledText(canvas, "" + this.stockemon.hp_current + "/" + this.stockemon.hp_max, 1850, 705, 15, "right");
         DrawScaledText(canvas, this.enemy.name, 1350, 610, 40, "left");
         DrawScaledText(canvas, "Lv: " + this.stockemon.lvl, 1850, 650, 20, "right");
+        DrawScaledText(canvas, "" + ep + " EP zum nächsten Level", 1840, 760, 20, "right");
 
         pic.x = 600;
         pic.y = 400;
@@ -91,12 +99,12 @@ function Fight(stockemon, enemy) {
                 for (var i = 0; i < 4; ++i)
                     titles[i] = this.stockemon.actions[i].name;
                 break;
-            case FightStatus.InFight:
-                titles[0] = "Skip";
-                break;
             case FightStatus.MainMenu:
-                titles[0] = "Flee";
-                titles[1] = "Fight";
+                titles[0] = "Fliehen";
+                titles[1] = "Kämpfen";
+                break;
+            default:
+                titles[0] = "Weiter";
                 break;
         };
 
@@ -133,16 +141,50 @@ function Fight(stockemon, enemy) {
         }
         if ((keys[13] || keys[32]) && !this.justSwitchedMenu) {
             this.justSwitchedMenu = true;
+            var article;
+            switch (this.enemy.gender) {
+                case "f": article = "Die "; break;
+                case "m": article = "Der "; break;
+                case "n": article = "Das "; break;
+            }
             switch (this.fightStatus) {
                 case FightStatus.MainMenu:
                     if (this.selected == 0) this.OnFlee();
                     if (this.selected == 1) this.OnFight();
                     break;
                 case FightStatus.Actions:
-                    //TODO: use action
-                    this.fightStatus = FightStatus.InFight;
+                    var dmg = this.stockemon.attackEnemy(this.stockemon.actions[this.selected], this.enemy);
+                    this.text = "Du setzt " + this.stockemon.actions[this.selected].name + " ein.\nDer Gegner verliert " + dmg + " Lebenspunkte.";
+                    this.fightStatus = FightStatus.InFightAtk;
+                    if (this.enemy.hp_current == 0)
+                        this.fightStatus = FightStatus.OnWin;
                     this.selected = 0;
                     break;
+                case FightStatus.InFightDef:
+                    this.fightStatus = FightStatus.MainMenu;
+                    this.selected = 1;
+                    this.text = "";
+                    break;
+                case FightStatus.InFightAtk:
+                    var enemyAttack = this.enemy.actions[Math.floor(Math.random() * 4)]
+                    var dmg = this.enemy.attackEnemy(enemyAttack, this.stockemon);
+                    this.text = article + this.enemy.name + " setzt " + enemyAttack.name + " ein.\nDu verlierst " + dmg + " Lebenspunkte.";
+                    this.fightStatus = FightStatus.InFightDef;
+                    if (this.stockemon.hp_current == 0)
+                        this.fightStatus = FightStatus.OnLoose;
+                    break;
+                case FightStatus.OnWin:
+                    this.text = article + this.enemy.name + " ist zerbrochen. \nDu bekommst " + this.enemy.epOnDeath + " EP.";
+                    this.fightStatus = FightStatus.OnReturn;
+                    this.stockemon.getEP(this.enemy.epOnDeath);
+                    break;
+                case FightStatus.OnLoose:
+                    this.text = "Du wurdest besiegt!\n" + article + this.enemy.name + " zieht lachend davon.";
+                    this.fightStatus = FightStatus.OnReturn;
+                    break;
+                case FightStatus.OnReturn:
+                    alert("Returning");
+                    return this.world;
             };
         }
 
@@ -154,6 +196,7 @@ function Fight(stockemon, enemy) {
             this.selected = (this.selected - 1 + this.numTitles) % this.numTitles;
             this.countdownKeys = 0.1;
         } else
-            return;
+            return this;
+        return this;
     }
 }

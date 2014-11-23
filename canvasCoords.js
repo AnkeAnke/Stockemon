@@ -43,5 +43,15 @@ function DrawScaledText(context, text, x, y, size, align) {
     var coordSize = GetCoords(size,0);
     context.font = "" + (coordSize.x).toFixed(0) + "px Arial";
     context.textAlign = align;
-    context.fillText(text, coord.x, coord.y);
+    var subst = text;
+
+    var n = subst.indexOf("\n");
+    while (n > -1) {
+        context.fillText(text.substr(0, n), coord.x, coord.y);
+        subst = subst.substr(n+1, subst.length-1);
+        coord.y += coordSize.x*1.2;
+        n = subst.indexOf("\n");
+    }
+    
+    context.fillText(subst, coord.x, coord.y);
 }
