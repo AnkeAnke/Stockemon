@@ -148,7 +148,7 @@ function Initialize(){
     globalImageHandler = new ImageHandler();
     LoadImages();
 
-    var hero = new Stockemon("w", 2, 5);
+    var hero = new Stockemon("0", 5, 15);
 
     world = new World(hero, document);
     activeScreen = world;

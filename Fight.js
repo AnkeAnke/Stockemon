@@ -184,7 +184,6 @@ function Fight(stockemon, enemy, world) {
                     this.fightStatus = FightStatus.OnReturn;
                     break;
                 case FightStatus.OnReturn:
-                    alert("Returning");
                     return this.world;
             };
         }
