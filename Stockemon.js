@@ -7,24 +7,24 @@ var typeEnum = {
 };
 
 var StockemonEnum = {
-    Stock: { type: "0", entwicklung: 0, name: "Stock", atk: 3, def: 1, luc: 1, hp_max: 10, g: "m" , action: "Stupsen"},
+    Stock: { type: "0", entwicklung: 0, name: "Stock", atk: 3, def: 1, luc: 1, hp_max: 10, g: "m"},
     
     //Schwerter
-    Schwert: { type: "w", name: "Schwert", entwicklung: 1, g: "n" },
-    Langschwert: { type: "w", name: "Langschwert", entwicklung: 2, g: "n" },
-    Zweihaender: { type: "w", name: "Zweihaender", entwicklung: 3, g: "m" },
-    GreatSword: { type: "w", name: "Aua Aua", entwicklung: 4, g: "n" },
+    Schwert: { type: "w", name: "Schwert", entwicklung: 1, g: "n", atk: 3, def: 1, luc: 1, hp_max: 13 },
+    Langschwert: { type: "w", name: "Langschwert", entwicklung: 2, g: "n", atk: 5, def: 3, luc: 3, hp_max: 15 },
+    Zweihaender: { type: "w", name: "Zweihaender", entwicklung: 3, g: "m", atk: 11, def: 2, luc: 2, hp_max: 18 },
+    GreatSword: { type: "w", name: "Aua Aua", entwicklung: 4, g: "n", atk: 27, def: 4, luc: 5, hp_max: 29 },
     //Schilde
-    Griff_mit_Brett: { type: "h", name: "Griff mit Brett", entwicklung: 1, g: "m" },
-    Schild: { type: "h", name: "Schild", entwicklung: 2, g: "n" },
-    Grossschild: { type: "h", name: "Grossschild", entwicklung: 3, g: "n" },
-    Igelschild: { type: "h", name: "Pieks Pieks", entwicklung: 4, g: "n" },
+    Griff_mit_Brett: { type: "h", name: "Griff mit Brett", entwicklung: 1, g: "m", atk: 2, def: 3, luc: 1, hp_max: 19 },
+    Schild: { type: "h", name: "Schild", entwicklung: 2, g: "n", atk: 3, def: 10, luc: 14, hp_max: 35 },
+    Grossschild: { type: "h", name: "Grossschild", entwicklung: 3, g: "n", atk: 8, def: 20, luc: 17, hp_max: 60 },
+    Igelschild: { type: "h", name: "Pieks Pieks", entwicklung: 4, g: "n", atk: 13, def: 27, luc: 20, hp_max: 100 },
 
     //Staebe
-    Speer: { type: "t", name: "Speer", entwicklung: 1, g: "m" },
-    Hellebarde: { type: "t", name: "Hellebarde", entwicklung: 2, g: "f" },
-    Dreizack: { type: "t", name: "Dreizack", entwicklung: 3, g: "m" },
-    Pikspikspiks: { type: "t", name: "Aua Pieks", entwicklung: 4, g: "n" },
+    Speer: { type: "t", name: "Speer", entwicklung: 1, g: "m", atk: 2, def: 2, luc: 2, hp_max: 15 },
+    Hellebarde: { type: "t", name: "Hellebarde", entwicklung: 2, g: "f", atk: 4, def: 6, luc: 8, hp_max: 25 },
+    Dreizack: { type: "t", name: "Dreizack", entwicklung: 3, g: "m", atk: 9, def: 11, luc: 9, hp_max: 40 },
+    Pikspikspiks: { type: "t", name: "Aua Pieks", entwicklung: 4, g: "n", atk: 20, def: 15, luc: 12, hp_max: 65 },
 
     //Tannenbaum!!!
     Tannenbaum: { type: "0", name: "Tannenbaum", entwicklung: 5, g: "m", atk: 42, des: 42, luc: 42, hp_max: 4242, action: "Ho!Ho!Ho!"}
@@ -54,12 +54,15 @@ function Stockemon(type, entwicklung, level) {
                 this.actions = [4];
                 for (var i = 0; i < 4; ++i) this.actions[i] = new Action(actionEnum.Stupsen); //First set all to default
                 var actionsindex = 1;
-                for (var actionKey in Action.ActionEnum) {
-                    var action = ActionEnum[actionKey];
-                    if ((type == action[type] || action[type] == "0") && entwicklung >= action[neededEvo] && level >= action[neededLvl]) {
-                        this.actions[actionindex] = new Action(action);
+                for (var actionKey in actionEnum) {
+                    var action = actionEnum[actionKey];
+                    if ((type == action.type || action.type == "0") && entwicklung >= action.neededEvo && level >= action.neededLvl) {
+                        this.actions[actionsindex] = new Action(action);
+                        actionsindex++;
+                        actionsindex %= 4;
                     }
                 }
+                break;
             }
         }
     }

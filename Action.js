@@ -17,7 +17,7 @@
     Auapieks: { type: "t", name: "Auapieks!", dmg : 27, dmg_reduce : 0, poison : [], neededLvl : 12, neededEvo: 4}, //Aua Pieks
 
     Hohoho: { type: "t", name: "Ho! Ho! Ho!", dmg : 27, dmg_reduce : 8, poison : [], neededLvl : 15, neededEvo: 5}, //Tannenbaum
-}
+};
 
 function Action(entry) {
     this.name = entry.name;

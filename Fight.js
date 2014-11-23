@@ -8,11 +8,10 @@
     OnReturn: { numTitles: 1 }
 };
 
-function Fight(stockemon, enemy, world, enemyTile) {
+function Fight(stockemon, enemy, world) {
     this.stockemon = stockemon;
     this.enemy = enemy;
     this.world = world;
-    this.tile = enemyTile;
     
     this.selected = 1;
     this.countdownKeys = 0;
@@ -80,7 +79,7 @@ function Fight(stockemon, enemy, world, enemyTile) {
         ui.h = 200;
         DrawScaledPos(canvas, globalImageHandler.GetImage("UIright"), ui);
         DrawScaledText(canvas, "" + this.stockemon.hp_current + "/" + this.stockemon.hp_max, 1850, 705, 15, "right");
-        DrawScaledText(canvas, this.stockemon.name, 1350, 610, 40, "left");
+        DrawScaledText(canvas, this.enemy.name, 1350, 610, 40, "left");
         DrawScaledText(canvas, "Lv: " + this.stockemon.lvl, 1850, 650, 20, "right");
         DrawScaledText(canvas, "" + ep + " EP zum nächsten Level", 1840, 760, 20, "right");
 
@@ -183,21 +182,9 @@ function Fight(stockemon, enemy, world, enemyTile) {
                 case FightStatus.OnLoose:
                     this.text = "Du wurdest besiegt!\n" + article + this.enemy.name + " zieht lachend davon.";
                     this.fightStatus = FightStatus.OnReturn;
-                    this.stockemon.epTillLvlUp *= 10;
-                    this.world.stockemon.heal();
-                    this.world.playerX = 25;
-                    this.world.playerY = 295;
                     break;
                 case FightStatus.OnReturn:
-                    var enemy = this.tile;
-                    if (enemy) {
-                        for (var i = 0; i < enemy.weapons.length - 1; ++i)
-                            enemy.weapons[i] = enemy.weapons[i + 1];
-                        enemy.weapons.length--;
-
-                        if (enemy.weapons.length == 0)
-                            this.world.map[world.playerX + world.direction.x][world.playerY + world.direction.y] = new Tile(TileType.MUD);
-                    }
+                    alert("Returning");
                     return this.world;
             };
         }
