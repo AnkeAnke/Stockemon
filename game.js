@@ -148,11 +148,11 @@ function Initialize(){
     globalImageHandler = new ImageHandler();
     LoadImages();
 
-    var stockemon = new Stockemon("0", 0, 5);
+    var stockemon = new Stockemon("w", 1, 5);
 
     world = new World(stockemon, document);
     // DEBUG
-    var stock = new Stockemon("0", 0, 5);
+    var stock = new Stockemon("w", 2, 5);
     fight = new Fight(stockemon, stock, world);
     activeScreen = fight;
 }
