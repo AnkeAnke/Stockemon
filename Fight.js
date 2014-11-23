@@ -186,8 +186,12 @@ function Fight(stockemon, enemy, world, enemyTile) {
                             this.enemyTile.weapons[i] = this.enemyTile.weapons[i + 1];
                         }
                         this.enemyTile.weapons.length--;
-                        if (this.enemyTile.weapons.length == 0)
+                        if (this.enemyTile.weapons.length == 0) {
+                            if (this.enemyTile.type.value == 16)
+                                return new Win();
                             this.enemyTile.type = TileType.MUD;
+                            
+                        }
                     }
                     break;
                 case FightStatus.OnLoose:

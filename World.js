@@ -9,6 +9,11 @@ function OnGrasWalk(evo, world) {
     if (ret >= 0.1)
         return world;
 
+
+    world.interpolation = -1;
+    world.playerX += world.direction.x;
+    world.playerY += world.direction.y;
+
     var enemy;
     var types = ["w", "h", "t"];
     var type = types[Math.floor(Math.random() * 3)];
@@ -106,8 +111,8 @@ function World(stockemon, document) {
     this.MapSizeY = 300;//worldImage.height;
     //console.log(this.worldImage.width);
 
-    this.playerX = 40;
-    this.playerY = 205;
+    this.playerX = 25;
+    this.playerY = 5;
     this.direction = Dir.UP;
     this.interpolation = -1;
 

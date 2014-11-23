@@ -140,6 +140,9 @@ function LoadImages() {
     globalImageHandler.AddImage("Aua Pieks", 'piekspiekspieks.png');
     globalImageHandler.AddImage("Tannenbaum", 'tannemon.png');
 
+    globalImageHandler.AddImage("Intro", 'intro.png');
+    globalImageHandler.AddImage("Win", 'win.png');
+
     globalImageHandler.WaitForLoad();
 }
 
@@ -148,10 +151,11 @@ function Initialize(){
     globalImageHandler = new ImageHandler();
     LoadImages();
 
-    var hero = new Stockemon("w", 2, 5);
+    var hero = new Stockemon("0", 0, 2);
 
     world = new World(hero, document);
-    activeScreen = world;
+
+    activeScreen = new Intro(world);
 }
 // Cross-browser support for requestAnimationFrame;
 requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame;
