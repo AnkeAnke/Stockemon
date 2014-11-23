@@ -30,6 +30,7 @@ function Fight(stockemon, enemy, world, enemyTile) {
 
     this.OnFlee = function() {
         //TODO: try to run *muhaha*
+        this.text = "Du kannst nicht fliehen.\nDu bist ein " + this.stockemon.name+"!";
     }
 
     this.Draw = function (canvas) {
