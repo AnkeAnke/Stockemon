@@ -2,15 +2,17 @@
 
 function walkable(world) { return world; }
 function solid(world){return false;}
-function error(world){throw message || "World error";}
 
 
-function OnGrasWalk(evo, world){
-    //TODO: randomly spawn Stockemon
+function OnGrasWalk(evo, world) {
+    var ret = Math.random();
+    if (ret >= 0.1)
+        return world;
+
     var enemy;
     var types = ["w", "h", "t"];
     var type = types[Math.floor(Math.random() * 3)];
-    var level = Math.max(Math.floor((evo+1)*2 * (1+Math.random()*0.5)), 1);
+    var level = Math.max(Math.floor((evo*2 + 1) * (1+Math.random()*0.6)), 1);
 
     for (var stockKey in StockemonEnum) {
         var stock = StockemonEnum[stockKey];
@@ -19,6 +21,9 @@ function OnGrasWalk(evo, world){
             enemy = new Stockemon(stock.type, evo, level);
         }
     }
+    world.interpolation = -1;
+    world.playerX += world.direction.x;
+    world.playerY += world.direction.y;
     return new Fight(world.stockemon, enemy, world);
 }
 
@@ -40,15 +45,17 @@ function OnPCClick(world, keys) {
 
 function OnEnemyClick(world, keys) {
     //TODO: FIGHT!
-    //alert("Enemy!");
-    return world;
+    var enemy = world.map[world.playerX + world.direction.x][world.playerY + world.direction.y];
+    //if (enemy.name != "enemy") alert("Waaaah!");
+
+    return new Fight(world.stockemon, enemy.weapons[0], world, enemy);
 }
-function Enemy0(world) { OnEnemyClick(0, world); }
-function Enemy1(world) { OnEnemyClick(1, world); }
-function Enemy2(world) { OnEnemyClick(2, world); }
-function Enemy3(world) { OnEnemyClick(3, world); }
-function Enemy4(world) { OnEnemyClick(4, world); }
-function Enemy5(world) { OnEnemyClick(5, world); }
+//function Enemy0(world) { OnEnemyClick(0, world); }
+//function Enemy1(world) { OnEnemyClick(1, world); }
+//function Enemy2(world) { OnEnemyClick(2, world); }
+//function Enemy3(world) { OnEnemyClick(3, world); }
+//function Enemy4(world) { OnEnemyClick(4, world); }
+//function Enemy5(world) { OnEnemyClick(5, world); }
 
 function Gras0(world) {return OnGrasWalk(0, world);}
 function Gras1(world) {return OnGrasWalk(1, world);}
@@ -69,12 +76,12 @@ var TileType = {
     WALL:   { height: 1.5, name: "wall", value: 8,  OnClick: nothing, OnWalk: solid    ,     r: 0, g: 0, b: 0},
     HEAL:   { height: 1.5, name: "heal", value: 9,  OnClick: OnHealClick, OnWalk: solid,     r: 0, g: 255, b:255},
     PC:     { height: 1.5, name: "pc", value: 10, OnClick: OnPCClick, OnWalk: solid,     r: 128, g: 128, b: 128},
-    ENEMY0: { height: 1.5, name: "enemy", value: 11, OnClick: Enemy0, OnWalk: solid, r: 50, g: 0, b: 0 },
-    ENEMY1: { height: 1.5, name: "enemy", value: 12, OnClick: Enemy1, OnWalk: solid, r: 90, g: 0, b: 0 },
-    ENEMY2: { height: 1.5, name: "enemy", value: 13, OnClick: Enemy2, OnWalk: solid, r: 130, g: 0, b: 0 },
-    ENEMY3: { height: 1.5, name: "enemy", value: 14, OnClick: Enemy3, OnWalk: solid, r: 170, g: 0, b: 0 },
-    ENEMY4: { height: 1.5, name: "enemy", value: 15, OnClick: Enemy4, OnWalk: solid, r: 210, g: 0, b: 0 },
-    ENEMY5: { height: 1.5, name: "enemy", value: 16, OnClick: Enemy5, OnWalk: solid, r: 250, g: 0, b: 0 }
+    ENEMY0: { height: 1.5, name: "enemy", value: 11, OnClick: OnEnemyClick, OnWalk: solid, r: 50, g: 0, b: 0, weapons: [new Stockemon("0", 0, 3)] },
+    ENEMY1: { height: 1.5, name: "enemy", value: 12, OnClick: OnEnemyClick, OnWalk: solid, r: 90, g: 0, b: 0, weapons: [new Stockemon("t", 1, 4), new Stockemon("w", 1, 5), new Stockemon("h", 1, 6)] },
+    ENEMY2: { height: 1.5, name: "enemy", value: 13, OnClick: OnEnemyClick, OnWalk: solid, r: 130, g: 0, b: 0, weapons: [new Stockemon("t", 2, 7), new Stockemon("w", 2, 8), new Stockemon("h", 2, 9)] },
+    ENEMY3: { height: 1.5, name: "enemy", value: 14, OnClick: OnEnemyClick, OnWalk: solid, r: 170, g: 0, b: 0, weapons: [new Stockemon("t", 3, 10), new Stockemon("w", 3, 11), new Stockemon("h", 3, 12)] },
+    ENEMY4: { height: 1.5, name: "enemy", value: 15, OnClick: OnEnemyClick, OnWalk: solid, r: 210, g: 0, b: 0, weapons: [new Stockemon("t", 4, 13), new Stockemon("w", 4, 14), new Stockemon("h", 4, 15)] },
+    ENEMY5: { height: 1.5, name: "enemy", value: 16, OnClick: OnEnemyClick, OnWalk: solid, r: 250, g: 0, b: 0, weapons: [new Stockemon("0", 5, 17)] }
 };
 
 var Dir = {
@@ -98,8 +105,8 @@ function World(stockemon, document) {
     this.MapSizeY = 300;//worldImage.height;
     //console.log(this.worldImage.width);
 
-    this.playerX = 25;
-    this.playerY = 295;
+    this.playerX = 40;
+    this.playerY = 205;
     this.direction = Dir.UP;
     this.interpolation = -1;
 
@@ -124,6 +131,9 @@ function World(stockemon, document) {
                 var type = TileType[typeKey];
                 if (pix[0] == type.r&& pix[1]==type.g && pix[2] == type.b){
                     this.map[x][y] = new Tile(type);
+                    if (type.name == "enemy") {
+                        this.map[x][y].weapons = type.weapons;
+                    }
                     break;
                 }
             }
@@ -161,6 +171,9 @@ function World(stockemon, document) {
                     continue;
                 var img = globalImageHandler.GetImage(this.map[x][y].type.name);
                 DrawScaledPos(canvas, img, new Box(x * TileSize - upperLeftPos.x, y * TileSize - upperLeftPos.y - (this.map[x][y].type.height - 1) * TileSize, TileSize, TileSize * this.map[x][y].type.height));
+                if (this.map[x][y].type.name == "enemy") {
+                    DrawScaledPos(canvas, globalImageHandler.GetImage(this.map[x][y].weapons[0].name), new Box(x * TileSize - upperLeftPos.x - TileSize * 0.5, y * TileSize - upperLeftPos.y - (this.map[x][y].type.height - 1) * TileSize - TileSize * 0.5, TileSize, TileSize * this.map[x][y].type.height));
+                }
             }
         }
         // Arrow
@@ -181,7 +194,6 @@ function World(stockemon, document) {
         DrawScaledText(canvas, this.stockemon.epTillLvlUp + " EP zum nächsten Level", 1540, 560, 16, "left");
         canvas.fillStyle = "#ffffff";
         DrawScaledText(canvas, "Level " + this.stockemon.lvl, 1540, 480, 60, "left");
-
     }
 
     this.Update = function (keys, timeSinceLastUpdate) {
@@ -229,10 +241,7 @@ function World(stockemon, document) {
             ret) {
             this.interpolation = 0;
             return ret;
-        }
-        
+        } 
         return this;
-
-
     }
 }
