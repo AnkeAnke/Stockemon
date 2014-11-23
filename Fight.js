@@ -58,7 +58,7 @@ function Fight(stockemon, enemy, world) {
         pic.y = 100;
         pic.w = 400;
         pic.h = 400;
-        if(this.fightStatus != FightStatus.OnWin)
+        if(this.enemy.hp_current > 0)
             DrawScaledPos(canvas, globalImageHandler.GetImage(this.enemy.name), pic);
 
         // Draw the own stock's status
@@ -87,7 +87,8 @@ function Fight(stockemon, enemy, world) {
         pic.y = 400;
         pic.w = 600;
         pic.h = 600;
-        DrawScaledPos(canvas, globalImageHandler.GetImage(this.stockemon.name), pic);
+        if (this.stockemon.hp_current > 0)
+            DrawScaledPos(canvas, globalImageHandler.GetImage(this.stockemon.name), pic);
 
         // Draw left menu
         var titles = [];

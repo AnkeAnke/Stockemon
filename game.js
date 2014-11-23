@@ -1,10 +1,7 @@
 // Constants
 var TARGET_FRAMETIME = 1.0 / 60.0;
-
-// Create a canvas
-var canvas = document.createElement("canvas");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+//canvas.width = window.innerWidth;
+//canvas.height = window.innerHeight;
 document.body.appendChild(canvas);
 var context = canvas.getContext("2d");
 
@@ -42,8 +39,14 @@ false);
 
 
 window.onresize = function () {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    if (window.innerHeight * ratio < window.innerWidth) {
+        canvas.width = window.innerHeight * ratio;
+    }
+    else {
+        canvas.height = window.innerWidth / ratio;
+    }
+    //canvas.width = window.innerWidth;
+    //canvas.height = window.innerHeight;
 }
 
 // Gamelogic updates.
@@ -101,7 +104,6 @@ function run() {
 
 function LoadImages() {
     globalImageHandler.AddImage("Map", "map.bmp");
-    globalImageHandler.AddImage("Stock", 'Stock.png');
     globalImageHandler.AddImage("UP", "UP.png");
     globalImageHandler.AddImage("LEFT", "LEFT.png");
     globalImageHandler.AddImage("DOWN", "DOWN.png");
@@ -113,6 +115,8 @@ function LoadImages() {
     globalImageHandler.AddImage("UIon", "UiselectionOn.png");
     globalImageHandler.AddImage("UIbar", "bar.png");
     globalImageHandler.AddImage("UItext", "UItext.png");
+    globalImageHandler.AddImage("UIworld", "UIworld.png");
+    globalImageHandler.AddImage("UIworldBG", "UIworldBG.png");
     
     globalImageHandler.AddImage("gras", "gras.png");
     globalImageHandler.AddImage("enemy", "enemy.png");
@@ -120,6 +124,21 @@ function LoadImages() {
     globalImageHandler.AddImage("wall", "wall.png");
     globalImageHandler.AddImage("pc", "pc.png");
     globalImageHandler.AddImage("heal", "heal.png");
+
+    globalImageHandler.AddImage("Stock", 'Stab.png');
+    globalImageHandler.AddImage("Schwert", 'Schwert.png');
+    globalImageHandler.AddImage("Langschwert", 'Langschwert.png');
+    globalImageHandler.AddImage("Zweihaender", 'Zweihaender.png');
+    globalImageHandler.AddImage("Aua Aua", 'GreatSword.png');
+    globalImageHandler.AddImage("Griff mit Brett", 'Brett.png');
+    globalImageHandler.AddImage("Schild", 'Shield.png');
+    globalImageHandler.AddImage("Grossschild", 'spike.png');
+    globalImageHandler.AddImage("Pieks Pieks", 'morespikes.png');
+    globalImageHandler.AddImage("Speer", 'speer.png');
+    globalImageHandler.AddImage("Hellebarde", 'alberd.png');
+    globalImageHandler.AddImage("Dreizack", 'trident.png');
+    globalImageHandler.AddImage("Aua Pieks", 'piekspiekspieks.png');
+    globalImageHandler.AddImage("Tannenbaum", 'tannemon.png');
 
     globalImageHandler.WaitForLoad();
 }

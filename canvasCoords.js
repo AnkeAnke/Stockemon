@@ -3,22 +3,33 @@ const DefaultWidth = 1900;
 const DefaultHeight = 1000;
 var ratio = DefaultWidth / DefaultHeight;
 
+// Create a canvas
+var canvas = document.createElement("canvas");
+if (window.innerHeight * ratio < window.innerWidth) {
+    canvas.width = window.innerHeight * ratio;
+    canvas.height = window.innerHeight;
+}
+else {
+    canvas.height = window.innerWidth / ratio;
+    canvas.width = window.innerWidth;
+}
+
 // Scales the images accordingly.
 function GetCoords(x, y) {
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-    if(height*ratio < width)
-    {
-        width = height * ratio;
-    }
-    else
-    {
-        height = width / ratio;
-    }
+    //var width = window.innerWidth;
+    //var height = window.innerHeight;
+    //if(height*ratio < width)
+    //{
+    //    width = height * ratio;
+    //}
+    //else
+    //{
+    //    height = width / ratio;
+    //}
 
     var out = new Object();
-    out.x = (width * (x / DefaultWidth));
-    out.y = (height * (y / DefaultHeight));
+    out.x = (canvas.width * (x / DefaultWidth));
+    out.y = (canvas.height * (y / DefaultHeight));
 
     return out;
 }

@@ -122,6 +122,68 @@ function Stockemon(type, entwicklung, level) {
         }
     }
 
+    this.getInfo = function () {
+        // format:  atk def luc max_hp eptolvlup lvl 
+        if (entwicklung == 5)
+            this.code = this.atk + " " + this.def + " " + this.luc + " " + this.max_hp + " " + this.eptolvlup + " " + this.lvl + " " + "GerdLiebtKekse";
+        else if (entwicklung == 4) {
+            this.code = "KekseSindToll";
+        } else if (entwicklung == 3) {
+            this.code = "AlleDieKekseMoegenSindToll";
+        } else if (entwicklung == 2) {
+            this.code = "StockeMonKommSchlagSieAlle";
+        } else if (entwicklung == 1) {
+            this.code = "AdventAdventEinStockMonSchlaegt";
+        }
+
+
+        alert(this.code);
+        return this.code; //this.type + '  LVL:' + this.lvl + 'Hungry:' + this.hungry + 'Sleepy:' + this.sleepy + 'Happy:' + this.happy + 'Dirty:' + this.dirty;
+    };
+    this.setInfo = function () {
+        var n = prompt("Dein Stockemon-Code:", "Hier kommt der Code hin");
+
+        var ss = n.split(" ");
+        var satk = ss[0];
+        var sdef = ss[1];
+        var sluc = ss[2];
+        var smax_hp = ss[3];
+        var septolvlup = ss[4];
+        var slvl = ss[5];
+        var n = ss[6];
+
+        this.atk = parseInt(satk);
+        this.def = parseInt(sdef);
+        this.luc = parseInt(sluc);
+        this.max_hp = parseInt(smax_hp);
+        this.eptolvlup = parseInt(septolvlup);
+        this.lvl = slvl;
+        if (n == "GerdLiebtKekse") {
+            entwicklung = 5;
+            this.lvl = 9001;
+        }
+        if (n == "KekseSindToll") {
+            entwicklung = 4;
+            this.setType();
+            this.lvl = 50;
+        }
+        if (n == "AlleDieKekseMoegenSindToll") {
+            entwicklung = 3;
+            this.setType();
+            this.lvl = 30;
+        }
+        if (n == "StockeMonKommSchlagSieAlle") {
+            entwicklung = 2;
+            this.setType();
+            this.lvl = 20;
+        }
+        if (n == "AdventAdventEinStockMonSchlaegt") {
+            entwicklung = 1;
+            this.setType();
+            this.lvl = 10;
+
+        }
+    };
 };
 
 /*

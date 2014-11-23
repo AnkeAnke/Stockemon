@@ -10,8 +10,8 @@ function OnGrasWalk(level){
 }
 
 function OnHealClick(world) {
-    //TODO: heal
-
+    world.stockemon.heal();
+    return world;
 }
 
 function OnPCClick(world) {
@@ -21,6 +21,7 @@ function OnPCClick(world) {
 function OnEnemyClick(level, world) {
     //TODO: FIGHT!
     //alert("Enemy!");
+    
 }
 function Enemy0(world) { OnEnemyClick(0, world); }
 function Enemy1(world) { OnEnemyClick(1, world); }
@@ -144,6 +145,14 @@ function World(stockemon, document) {
         }
         // Arrow
         DrawScaledPos(canvas, globalImageHandler.GetImage(this.direction.dir), new Box(playerCoord.x - 0.5 * TileSize - upperLeftPos.x, playerCoord.y - 0.5 * TileSize - upperLeftPos.y, TileSize * 2, TileSize * 2));
+
+
+        // Draw UI
+        DrawScaledPos(canvas, globalImageHandler.GetImage("UIworldBG"), new Box(1700, 0, 200, 200));
+        DrawScaledPos(canvas, globalImageHandler.GetImage(this.stockemon.name), new Box(1700, 0, 200, 200));
+        DrawScaledPos(canvas, globalImageHandler.GetImage("UIworld"), new Box(1700, 0, 200, 300));
+        //this.atk + " " + this.def + " " + this.luc + " " + this.max_hp + " " + this.eptolvlup + " " + this.lvl 
+        DrawScaledText(canvas, "ATK\nDEF\nLUC\n", 1870, 260, 20, "right");
 
     }
 
