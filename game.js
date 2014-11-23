@@ -39,14 +39,14 @@ false);
 
 
 window.onresize = function () {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     if (window.innerHeight * ratio < window.innerWidth) {
         canvas.width = window.innerHeight * ratio;
     }
     else {
         canvas.height = window.innerWidth / ratio;
-    }
-    //canvas.width = window.innerWidth;
-    //canvas.height = window.innerHeight;
+    }   
 }
 
 // Gamelogic updates.
@@ -135,7 +135,7 @@ function LoadImages() {
     globalImageHandler.AddImage("Grossschild", 'spike.png');
     globalImageHandler.AddImage("Pieks Pieks", 'morespikes.png');
     globalImageHandler.AddImage("Speer", 'speer.png');
-    globalImageHandler.AddImage("Hellebarde", 'alberd.png');
+    globalImageHandler.AddImage("Hellebarde", 'halberd.png');
     globalImageHandler.AddImage("Dreizack", 'trident.png');
     globalImageHandler.AddImage("Aua Pieks", 'piekspiekspieks.png');
     globalImageHandler.AddImage("Tannenbaum", 'tannemon.png');

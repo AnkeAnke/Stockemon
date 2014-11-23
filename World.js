@@ -1,12 +1,25 @@
-﻿function nothing(world) { }//console.log("nothing! :)"); }
+﻿function nothing(world) { return world; }//console.log("nothing! :)"); }
 
-function walkable() { return true; }
-function solid(){return false;}
-function error(){throw message || "World error";}
+function walkable(world) { return world; }
+function solid(world){return false;}
+function error(world){throw message || "World error";}
 
-function OnGrasWalk(level){
+
+function OnGrasWalk(evo, world){
     //TODO: randomly spawn Stockemon
-    return true;
+    var enemy;
+    var types = ["w", "h", "t"];
+    var type = types[Math.floor(Math.random() * 3)];
+    var level = Math.max(Math.floor((evo+1)*2 * (1+Math.random()*0.5)), 1);
+
+    for (var stockKey in StockemonEnum) {
+        var stock = StockemonEnum[stockKey];
+        if ((stock.type == "0" || stock.type == type) && stock.entwicklung == evo) {
+
+            enemy = new Stockemon(stock.type, evo, level);
+        }
+    }
+    return new Fight(world.stockemon, enemy, world);
 }
 
 function OnHealClick(world) {
@@ -21,7 +34,7 @@ function OnPCClick(world) {
 function OnEnemyClick(level, world) {
     //TODO: FIGHT!
     //alert("Enemy!");
-    
+    return world;
 }
 function Enemy0(world) { OnEnemyClick(0, world); }
 function Enemy1(world) { OnEnemyClick(1, world); }
@@ -30,12 +43,12 @@ function Enemy3(world) { OnEnemyClick(3, world); }
 function Enemy4(world) { OnEnemyClick(4, world); }
 function Enemy5(world) { OnEnemyClick(5, world); }
 
-function Gras0() {return OnGrasWalk(0);}
-function Gras1() {return OnGrasWalk(1);}
-function Gras2() {return OnGrasWalk(2);}
-function Gras3() {return OnGrasWalk(3);}
-function Gras4() {return OnGrasWalk(4);}
-function Gras5() {return OnGrasWalk(5);}
+function Gras0(world) {return OnGrasWalk(0, world);}
+function Gras1(world) {return OnGrasWalk(1, world);}
+function Gras2(world) {return OnGrasWalk(2, world);}
+function Gras3(world) {return OnGrasWalk(3, world);}
+function Gras4(world) {return OnGrasWalk(4, world);}
+function Gras5(world) {return OnGrasWalk(5, world);}
 
 var TileType = {
     GRASS0: { height: 1.0, name: "gras",  value: 0, OnClick: nothing, OnWalk: Gras0,  r: 0, g: 50, b: 0 },
@@ -48,7 +61,7 @@ var TileType = {
     WATER:  { height: 1.0, name: "water", value: 7,  OnClick: nothing, OnWalk: solid    ,     r: 0, g: 0, b: 255},
     WALL:   { height: 1.5, name: "wall", value: 8,  OnClick: nothing, OnWalk: solid    ,     r: 0, g: 0, b: 0},
     HEAL:   { height: 1.5, name: "heal", value: 9,  OnClick: OnHealClick, OnWalk: solid,     r: 0, g: 255, b:255},
-    PC:     { height: 1.5, name: "pc", value: 10, OnClick: OnHealClick, OnWalk: solid,     r: 128, g: 128, b: 128},
+    PC:     { height: 1.5, name: "pc", value: 10, OnClick: OnPCClick, OnWalk: solid,     r: 128, g: 128, b: 128},
     ENEMY0: { height: 1.5, name: "enemy", value: 11, OnClick: Enemy0, OnWalk: solid, r: 50, g: 0, b: 0 },
     ENEMY1: { height: 1.5, name: "enemy", value: 12, OnClick: Enemy1, OnWalk: solid, r: 90, g: 0, b: 0 },
     ENEMY2: { height: 1.5, name: "enemy", value: 13, OnClick: Enemy2, OnWalk: solid, r: 130, g: 0, b: 0 },
@@ -78,8 +91,8 @@ function World(stockemon, document) {
     this.MapSizeY = 300;//worldImage.height;
     //console.log(this.worldImage.width);
 
-    this.playerX = 5;
-    this.playerY = 5;
+    this.playerX = 25;
+    this.playerY = 295;
     this.direction = Dir.UP;
     this.interpolation = -1;
 
@@ -148,11 +161,19 @@ function World(stockemon, document) {
 
 
         // Draw UI
-        DrawScaledPos(canvas, globalImageHandler.GetImage("UIworldBG"), new Box(1700, 0, 200, 200));
-        DrawScaledPos(canvas, globalImageHandler.GetImage(this.stockemon.name), new Box(1700, 0, 200, 200));
-        DrawScaledPos(canvas, globalImageHandler.GetImage("UIworld"), new Box(1700, 0, 200, 300));
-        //this.atk + " " + this.def + " " + this.luc + " " + this.max_hp + " " + this.eptolvlup + " " + this.lvl 
-        DrawScaledText(canvas, "ATK\nDEF\nLUC\n", 1870, 260, 20, "right");
+        DrawScaledPos(canvas, globalImageHandler.GetImage("UIworldBG"), new Box(1500, 0, 400, 600));
+        DrawScaledPos(canvas, globalImageHandler.GetImage("UIbar"), new Box(1515, 420, 360*this.stockemon.hp_current/this.stockemon.hp_max, 60));
+        DrawScaledPos(canvas, globalImageHandler.GetImage(this.stockemon.name), new Box(1500, 0, 400, 400));
+        DrawScaledPos(canvas, globalImageHandler.GetImage("UIworld"), new Box(1500, 0, 400, 600));
+        DrawScaledText(canvas, this.stockemon.name, 1870, 20, 40, "right");
+
+        canvas.fillStyle = "#ff9001";
+        DrawScaledText(canvas, "" + this.stockemon.hp_current + "/" + this.stockemon.hp_max, 1875, 455, 20, "right");
+        DrawScaledText(canvas, "ATK\nDEF\nLUC\n", 1820, 500, 24, "left");
+        DrawScaledText(canvas, this.stockemon.atk + "\n" + this.stockemon.def + "\n" + this.stockemon.luc, 1800, 500, 24, "right");
+        DrawScaledText(canvas, this.stockemon.epTillLvlUp + " EP zum nächsten Level", 1540, 560, 16, "left");
+        canvas.fillStyle = "#ffffff";
+        DrawScaledText(canvas, "Level " + this.stockemon.lvl, 1540, 480, 60, "left");
 
     }
 
@@ -179,7 +200,7 @@ function World(stockemon, document) {
             if (this.playerX + this.direction.x >= 0 && this.playerX + this.direction.x < this.MapSizeX &&
             this.playerY + this.direction.y >= 0 && this.playerY + this.direction.y < this.MapSizeY) {
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                return this;///this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnClick(this);
+                return this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnClick(this);
             }
         }
         if (keys[37] || keys["A".charCodeAt(0)]) {
@@ -196,10 +217,12 @@ function World(stockemon, document) {
                     } else
                         return this;
         // Is the next tile existing and walkable?
+        var ret = this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnWalk(this);
         if (this.playerX + this.direction.x >= 0 && this.playerX + this.direction.x < this.MapSizeX &&
             this.playerY + this.direction.y >= 0 && this.playerY + this.direction.y < this.MapSizeY &&
-            this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnWalk()) {
+            ret) {
             this.interpolation = 0;
+            return ret;
         }
         
         return this;
