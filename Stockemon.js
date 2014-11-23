@@ -95,11 +95,13 @@ function Stockemon(type, entwicklung, level) {
     }
 
     this.onDamage = function (amount) {
-        this.hp_current -= amount / this.def;
+        var damage = amount / this.def
+        this.hp_current -= damage;
         //TODO add Interface function (display damage taken)
         if (this.hp_current < 0) {
             this.onDeath();
         }
+        return damage;
     }
 
     this.onDeath = function () {
@@ -115,7 +117,7 @@ function Stockemon(type, entwicklung, level) {
     this.attackEnemy = function(action, enemy){
         var damage = action.dmg * this.atk * ((Math.random() * this.luc - 0.5) * 0.05 + 1);
         damage = damage.toFixed();
-        enemy.onDamage(damage);
+        damage = enemy.onDamage(damage);
 
         return damage;
     }
@@ -132,64 +134,64 @@ function Stockemon(type, entwicklung, level) {
 
     this.getInfo = function () {
         // format:  atk def luc max_hp eptolvlup lvl 
+        var code = this.atk + " " + this.def + " " + this.luc + " " + this.hp_max + " " + this.epTillLvlUp + " " + this.lvl + " " + this.type + " ";
         if (entwicklung == 5)
-            this.code = this.atk + " " + this.def + " " + this.luc + " " + this.max_hp + " " + this.eptolvlup + " " + this.lvl + " " + "GerdLiebtKekse";
+            code += "GerdLiebtKekse";
         else if (entwicklung == 4) {
-            this.code = "KekseSindToll";
+            code += "KekseSindToll";
         } else if (entwicklung == 3) {
-            this.code = "AlleDieKekseMoegenSindToll";
+            code += "AlleDieKekseMoegenSindToll";
         } else if (entwicklung == 2) {
-            this.code = "StockeMonKommSchlagSieAlle";
+            code += "StockeMonKommSchlagSieAlle";
         } else if (entwicklung == 1) {
-            this.code = "AdventAdventEinStockMonSchlaegt";
+            code += "AdventAdventEinStockMonSchlaegt";
+        } else if (entwicklung == 0) {
+            code += "StockStockWerIstDa";
         }
-
-
-        alert(this.code);
-        return this.code; //this.type + '  LVL:' + this.lvl + 'Hungry:' + this.hungry + 'Sleepy:' + this.sleepy + 'Happy:' + this.happy + 'Dirty:' + this.dirty;
+        return code; //this.type + '  LVL:' + this.lvl + 'Hungry:' + this.hungry + 'Sleepy:' + this.sleepy + 'Happy:' + this.happy + 'Dirty:' + this.dirty;
     };
     this.setInfo = function () {
-        var n = prompt("Dein Stockemon-Code:", "Hier kommt der Code hin");
-
+        var current = this.getInfo();
+        var n = prompt("Dein Stockemon-Code:", current);
+        if (n != n || n == null || n == undefined)
+            return;
         var ss = n.split(" ");
+        if (n.length < 8)
+            return;
         var satk = ss[0];
         var sdef = ss[1];
         var sluc = ss[2];
         var smax_hp = ss[3];
         var septolvlup = ss[4];
         var slvl = ss[5];
-        var n = ss[6];
+        var stype = ss[6];
+        var n = ss[7];
 
         this.atk = parseInt(satk);
         this.def = parseInt(sdef);
         this.luc = parseInt(sluc);
-        this.max_hp = parseInt(smax_hp);
-        this.eptolvlup = parseInt(septolvlup);
+        this.hp_max = parseInt(smax_hp);
+        this.heal();
+        this.epTillLvlUp = parseInt(septolvlup);
         this.lvl = slvl;
+
         if (n == "GerdLiebtKekse") {
-            entwicklung = 5;
-            this.lvl = 9001;
+            this.evolution = 5;
         }
         if (n == "KekseSindToll") {
-            entwicklung = 4;
-            this.setType();
-            this.lvl = 50;
+            this.evolution = 4;
         }
         if (n == "AlleDieKekseMoegenSindToll") {
-            entwicklung = 3;
-            this.setType();
-            this.lvl = 30;
+            this.evolution = 3;
         }
         if (n == "StockeMonKommSchlagSieAlle") {
-            entwicklung = 2;
-            this.setType();
-            this.lvl = 20;
+            this.evolution = 2;
         }
         if (n == "AdventAdventEinStockMonSchlaegt") {
-            entwicklung = 1;
-            this.setType();
-            this.lvl = 10;
-
+            this.evolution = 1;
+        }
+        if (n == "StockStockWerIstDa") {
+            this.evolution = 0;
         }
     };
 };

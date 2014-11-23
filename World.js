@@ -1,4 +1,4 @@
-﻿function nothing(world) { return world; }//console.log("nothing! :)"); }
+﻿function nothing(world, keys) { return world; }//console.log("nothing! :)"); }
 
 function walkable(world) { return world; }
 function solid(world){return false;}
@@ -27,16 +27,23 @@ function OnGrasWalk(evo, world) {
     return new Fight(world.stockemon, enemy, world);
 }
 
-function OnHealClick(world) {
+function OnHealClick(world, keys) {
     world.stockemon.heal();
     return world;
 }
 
-function OnPCClick(world) {
-    //TODO: load and save
+function OnPCClick(world, keys) {
+    //world.stockemon.getInfo();
+    world.stockemon.setInfo();
+    //keys[13] = false;
+    //keys[32] = false;
+    for (var key in keys) {
+        keys[key] = false;
+    }
+    return world;
 }
 
-function OnEnemyClick(world) {
+function OnEnemyClick(world, keys) {
     //TODO: FIGHT!
     var enemy = world.map[world.playerX + world.direction.x][world.playerY + world.direction.y];
     //if (enemy.name != "enemy") alert("Waaaah!");
@@ -176,7 +183,7 @@ function World(stockemon, document) {
         // Draw UI
         DrawScaledPos(canvas, globalImageHandler.GetImage("UIworldBG"), new Box(1500, 0, 400, 600));
         DrawScaledPos(canvas, globalImageHandler.GetImage("UIbar"), new Box(1515, 420, 360*this.stockemon.hp_current/this.stockemon.hp_max, 60));
-        DrawScaledPos(canvas, globalImageHandler.GetImage(this.stockemon.name), new Box(1500, 0, 400, 400));
+        DrawScaledPos(canvas, globalImageHandler.GetImage(this.stockemon.name), new Box(1530, 60, 340, 340));
         DrawScaledPos(canvas, globalImageHandler.GetImage("UIworld"), new Box(1500, 0, 400, 600));
         DrawScaledText(canvas, this.stockemon.name, 1870, 20, 40, "right");
 
@@ -211,8 +218,7 @@ function World(stockemon, document) {
         if (keys[13] || keys[32]) {
             if (this.playerX + this.direction.x >= 0 && this.playerX + this.direction.x < this.MapSizeX &&
             this.playerY + this.direction.y >= 0 && this.playerY + this.direction.y < this.MapSizeY) {
-                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                return this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnClick(this);
+                return this.map[this.playerX + this.direction.x][this.playerY + this.direction.y].type.OnClick(this, keys);
             }
         }
         if (keys[37] || keys["A".charCodeAt(0)]) {
