@@ -56,10 +56,10 @@ function Stockemon(type, entwicklung, level) {
                 var actionsindex = 1;
                 for (var actionKey in actionEnum) {
                     var action = actionEnum[actionKey];
-                    if ((type == action[type] || action[type] == "0") && entwicklung >= action[neededEvo] && level >= action[neededLvl]) {
-                        this.actions[actionindex] = new Action(action);
+                    if ((type == action.type || action.type == "0") && entwicklung >= action.neededEvo && level >= action.neededLvl) {
+                        this.actions[actionsindex] = new Action(action);
                         actionsindex++;
-                        actionsindex /= 4;
+                        actionsindex %= 4;
                     }
                 }
                 break;

@@ -148,12 +148,12 @@ function Initialize(){
     globalImageHandler = new ImageHandler();
     LoadImages();
 
-    var stockemon = new Stockemon("w", 1, 5);
+    var hero = new Stockemon("w", 2, 5);
 
-    world = new World(stockemon, document);
+    world = new World(hero, document);
     // DEBUG
-    var stock = new Stockemon("w", 2, 5);
-    fight = new Fight(stockemon, stock, world);
+    var stock = new Stockemon("w", 2, 2);
+    fight = new Fight(hero, stock, world);
     activeScreen = fight;
 }
 // Cross-browser support for requestAnimationFrame;
