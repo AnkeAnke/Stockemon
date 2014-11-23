@@ -1,0 +1,73 @@
+this.getInfo = function () {
+        // format:  atk def luc max_hp eptolvlup lvl type
+        if (entwicklung == 5 )
+            this.code = this.atk + " " + this.def + " " + this.luc + " " + this.max_hp + " " + this.eptolvlup + " " + this.lvl+ " " + this.type + " " + "GerdLiebtKekse";
+        else if (entwicklung == 4) {
+            this.code = this.code = this.atk + " " + this.def + " " + this.luc + " " + this.max_hp + " " + this.eptolvlup + " " + this.lvl + " " + this.type + " " + "KekseSindToll";
+        } else if (entwicklung == 3) {
+            this.code = this.code = this.atk + " " + this.def + " " + this.luc + " " + this.max_hp + " " + this.eptolvlup + " " + this.lvl + " " + this.type + " " + "AlleDieKekseMoegenSindToll";
+        } else if (entwicklung == 2) {
+            this.code = this.code = this.atk + " " + this.def + " " + this.luc + " " + this.max_hp + " " + this.eptolvlup + " " + this.lvl + " " + this.type + " " + "StockeMonKommSchlagSieAlle";
+        } else if (entwicklung == 1) {
+            this.code = this.code = this.atk + " " + this.def + " " + this.luc + " " + this.max_hp + " " + this.eptolvlup + " " + this.lvl + " " + this.type + " " + "AdventAdventEinStockMonSchlaegt";
+        }
+        else {
+            this.code = this.code = this.atk + " " + this.def + " " + this.luc + " " + this.max_hp + " " + this.eptolvlup + " " + this.lvl + " " + this.type + " " + "Keks";
+        }
+
+        alert(this.code );
+        return this.type + '  LVL:' + this.lvl + 'Hungry:' + this.hungry + 'Sleepy:' + this.sleepy + 'Happy:' + this.happy + 'Dirty:' + this.dirty;
+    };
+    this.setInfo = function () {
+        var n = prompt("Dein Code:", "Hier kommt der Code hin");
+       
+        var ss = n.split(" ");
+        var satk = ss[0];
+        var sdef = ss[1];
+        var sluc = ss[2];
+        var smax_hp = ss[3];
+        var septolvlup = ss[4];
+        var slvl = ss[5];
+        var stype = ss[6];
+        var n = ss[7];
+   
+        this.atk = parseInt(satk);
+        this.def = parseInt(sdef);
+        this.luc = parseInt(sluc);
+        this.max_hp = parseInt(smax_hp);
+        this.eptolvlup = parseInt(septolvlup);
+        this.type = pareInt(stype);
+        this.lvl = slvl;
+
+     if (n == "GerdLiebtKekse") {
+          entwicklung = 5;
+          this.lvl = slvl;
+      }
+      else if (n == "KekseSindToll")
+      {
+          entwicklung = 4;
+          this.type = stype;
+          this.lvl = slvl;
+      }
+      else if (n == "AlleDieKekseMoegenSindToll") {
+          entwicklung = 3;
+          this.type = stype;
+          this.lvl = slvl;
+      }
+      else if (n == "StockeMonKommSchlagSieAlle") {
+          entwicklung = 2;
+          this.type = stype;
+          this.lvl = slvl;
+      }
+      else if (n == "AdventAdventEinStockMonSchlaegt") {
+          entwicklung = 1;
+          this.type = stype;
+          this.lvl = slvl;
+      } else if (n == "Kekse")
+      {
+          entwicklung = 1;
+          this.type = "0";
+          this.lvl = slvl;
+      }
+       
+    };
