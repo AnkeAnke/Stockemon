@@ -138,7 +138,7 @@ function Fight(stockemon, enemy, world) {
 
         if (this.countdownKeys > 0) {
             this.countdownKeys -= timeSinceLastUpdate;
-            return;
+            return this;
         }
         if ((keys[13] || keys[32]) && !this.justSwitchedMenu) {
             this.justSwitchedMenu = true;
