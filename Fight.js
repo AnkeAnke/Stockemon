@@ -196,8 +196,8 @@ function Fight(stockemon, enemy, world, enemyTile) {
                     break;
                 case FightStatus.OnLoose:
                     this.text = "Du wurdest besiegt!\n" + article + this.enemy.name + " zieht lachend davon.";
-                    this.playerX = 25;
-                    this.playerY = 295;
+                    this.world.playerX = 25;
+                    this.world.playerY = 295;
                     this.stockemon.epTillLvlUp *= 10;
                     this.stockemon.heal();
                     this.fightStatus = FightStatus.OnReturn;

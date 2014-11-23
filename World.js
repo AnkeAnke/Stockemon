@@ -9,11 +9,6 @@ function OnGrasWalk(evo, world) {
     if (ret >= 0.1)
         return world;
 
-
-    world.interpolation = -1;
-    world.playerX += world.direction.x;
-    world.playerY += world.direction.y;
-
     var enemy;
     var types = ["w", "h", "t"];
     var type = types[Math.floor(Math.random() * 3)];
