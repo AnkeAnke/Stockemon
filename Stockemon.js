@@ -27,7 +27,7 @@ var StockemonEnum = {
     Pikspikspiks: { type: "t", name: "Aua Pieks", entwicklung: 4, g: "n" },
 
     //Tannenbaum!!!
-    Tannenbaum: { type: "0", name: "Tannenbaum", entwicklung: 5, g: "m", atk: 42, des: 42, luc, 42, hp_max: 4242, action: "Ho!Ho!Ho!"}
+    Tannenbaum: { type: "0", name: "Tannenbaum", entwicklung: 5, g: "m", atk: 42, des: 42, luc: 42, hp_max: 4242, action: "Ho!Ho!Ho!"}
 };
 
 

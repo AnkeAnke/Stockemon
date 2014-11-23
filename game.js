@@ -151,10 +151,7 @@ function Initialize(){
     var stockemon = new Stockemon("0", 0, 5);
 
     world = new World(stockemon, document);
-    // DEBUG
-    var stock = new Stockemon("0", 0, 5);
-    fight = new Fight(stockemon, stock, world);
-    activeScreen = fight;
+    activeScreen = world;
 }
 // Cross-browser support for requestAnimationFrame;
 requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame;
