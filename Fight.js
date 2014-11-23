@@ -8,10 +8,11 @@
     OnReturn: { numTitles: 1 }
 };
 
-function Fight(stockemon, enemy, world) {
+function Fight(stockemon, enemy, world, enemyTile) {
     this.stockemon = stockemon;
     this.enemy = enemy;
     this.world = world;
+    this.enemyTile = enemyTile;
     
     this.selected = 1;
     this.countdownKeys = 0;
@@ -79,7 +80,7 @@ function Fight(stockemon, enemy, world) {
         ui.h = 200;
         DrawScaledPos(canvas, globalImageHandler.GetImage("UIright"), ui);
         DrawScaledText(canvas, "" + this.stockemon.hp_current + "/" + this.stockemon.hp_max, 1850, 705, 15, "right");
-        DrawScaledText(canvas, this.enemy.name, 1350, 610, 40, "left");
+        DrawScaledText(canvas, this.stockemon.name, 1350, 610, 40, "left");
         DrawScaledText(canvas, "Lv: " + this.stockemon.lvl, 1850, 650, 20, "right");
         DrawScaledText(canvas, "" + ep + " EP zum nächsten Level", 1840, 760, 20, "right");
 
@@ -155,6 +156,7 @@ function Fight(stockemon, enemy, world) {
                     break;
                 case FightStatus.Actions:
                     var dmg = this.stockemon.attackEnemy(this.stockemon.actions[this.selected], this.enemy);
+                    //var poison = this.enemy.onTick();
                     this.text = "Du setzt " + this.stockemon.actions[this.selected].name + " ein.\nDer Gegner verliert " + dmg + " Lebenspunkte.";
                     this.fightStatus = FightStatus.InFightAtk;
                     if (this.enemy.hp_current == 0)
@@ -169,6 +171,7 @@ function Fight(stockemon, enemy, world) {
                 case FightStatus.InFightAtk:
                     var enemyAttack = this.enemy.actions[Math.floor(Math.random() * 4)]
                     var dmg = this.enemy.attackEnemy(enemyAttack, this.stockemon);
+                    //var poison = this.stockemon.onTick();
                     this.text = article + this.enemy.name + " setzt " + enemyAttack.name + " ein.\nDu verlierst " + dmg + " Lebenspunkte.";
                     this.fightStatus = FightStatus.InFightDef;
                     if (this.stockemon.hp_current == 0)
@@ -178,13 +181,27 @@ function Fight(stockemon, enemy, world) {
                     this.text = article + this.enemy.name + " ist zerbrochen. \nDu bekommst " + this.enemy.epOnDeath + " EP.";
                     this.fightStatus = FightStatus.OnReturn;
                     this.stockemon.getEP(this.enemy.epOnDeath);
+                    if (this.enemyTile) {
+                        for (var i = 0; i < this.enemyTile.weapons.length - 1; ++i) {
+                            this.enemyTile.weapons[i] = this.enemyTile.weapons[i + 1];
+                        }
+                        this.enemyTile.weapons.length--;
+                        if (this.enemyTile.weapons.length == 0)
+                            this.enemyTile.type = TileType.MUD;
+                    }
                     break;
                 case FightStatus.OnLoose:
                     this.text = "Du wurdest besiegt!\n" + article + this.enemy.name + " zieht lachend davon.";
+                    this.playerX = 25;
+                    this.playerY = 295;
+                    this.stockemon.epTillLvlUp *= 10;
+                    this.stockemon.heal();
                     this.fightStatus = FightStatus.OnReturn;
                     break;
                 case FightStatus.OnReturn:
-                    alert("Returning");
+                    for (var key in keys) {
+                        keys[key] = false;
+                    }
                     return this.world;
             };
         }

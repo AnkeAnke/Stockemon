@@ -44,10 +44,11 @@ function OnPCClick(world, keys) {
 }
 
 function OnEnemyClick(world, keys) {
-    //TODO: FIGHT!
-    var enemy = world.map[world.playerX + world.direction.x][world.playerY + world.direction.y];
-    //if (enemy.name != "enemy") alert("Waaaah!");
 
+    var enemy = world.map[world.playerX + world.direction.x][world.playerY + world.direction.y];
+    for (var key in keys) {
+        keys[key] = false;
+    }
     return new Fight(world.stockemon, enemy.weapons[0], world, enemy);
 }
 //function Enemy0(world) { OnEnemyClick(0, world); }
@@ -172,7 +173,7 @@ function World(stockemon, document) {
                 var img = globalImageHandler.GetImage(this.map[x][y].type.name);
                 DrawScaledPos(canvas, img, new Box(x * TileSize - upperLeftPos.x, y * TileSize - upperLeftPos.y - (this.map[x][y].type.height - 1) * TileSize, TileSize, TileSize * this.map[x][y].type.height));
                 if (this.map[x][y].type.name == "enemy") {
-                    DrawScaledPos(canvas, globalImageHandler.GetImage(this.map[x][y].weapons[0].name), new Box(x * TileSize - upperLeftPos.x - TileSize * 0.5, y * TileSize - upperLeftPos.y - (this.map[x][y].type.height - 1) * TileSize - TileSize * 0.5, TileSize, TileSize * this.map[x][y].type.height));
+                    DrawScaledPos(canvas, globalImageHandler.GetImage(this.map[x][y].weapons[0].name), new Box(x * TileSize - upperLeftPos.x - TileSize * 0.5, y * TileSize - upperLeftPos.y - (this.map[x][y].type.height - 1) * TileSize, TileSize, TileSize));
                 }
             }
         }
