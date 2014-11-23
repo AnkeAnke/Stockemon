@@ -58,7 +58,7 @@ function DrawScaledText(context, text, x, y, size, align) {
 
     var n = subst.indexOf("\n");
     while (n > -1) {
-        context.fillText(text.substr(0, n), coord.x, coord.y);
+        context.fillText(subst.substr(0, n), coord.x, coord.y);
         subst = subst.substr(n+1, subst.length-1);
         coord.y += coordSize.x*1.2;
         n = subst.indexOf("\n");
