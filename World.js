@@ -112,7 +112,7 @@ function World(stockemon, document) {
     //console.log(this.worldImage.width);
 
     this.playerX = 25;
-    this.playerY = 5;
+    this.playerY = 295;
     this.direction = Dir.UP;
     this.interpolation = -1;
 
