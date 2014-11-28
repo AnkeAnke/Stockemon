@@ -74,18 +74,14 @@ var render = function (timeSinceLastFrame) {
     {
         context.fillStyle = "#fff";
         context.globalAlpha = 0.5;
-        context.font = "bold 20px sans-serif";
-        var minutes = playTime / 60;
-        var seconds = playTime - Math.floor(minutes) * 60;
-        var text = minutes.toFixed(0).concat(":", seconds >= 10 ? "" : "0", seconds.toFixed());
-        var textSize = context.measureText(text);
-        context.fillText(text, canvas.width - textSize.width - 20, canvas.height - 20);
         context.globalAlpha = 1.0;
     }
 
     // Draw game
     //    world.Draw(context);
     activeScreen.Draw(context);
+
+    DrawScaledText(context, "Christoph & Anke", 1850, 950, 40, "right");
 }
 
 // Gameloop.
@@ -151,7 +147,7 @@ function Initialize(){
     globalImageHandler = new ImageHandler();
     LoadImages();
 
-    var hero = new Stockemon("0", 0, 2);
+    var hero = new Stockemon("0", 0, 3);
 
     world = new World(hero, document);
 
