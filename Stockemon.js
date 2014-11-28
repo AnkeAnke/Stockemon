@@ -174,16 +174,8 @@ function Stockemon(type, entwicklung, level) {
         var stype = ss[6];
         var n = ss[7];
 
-        this.atk = parseInt(satk);
-        this.def = parseInt(sdef);
-        this.luc = parseInt(sluc);
-        this.hp_max = parseInt(smax_hp);
-        this.heal();
-        this.epTillLvlUp = parseInt(septolvlup);
         this.lvl = slvl;
         this.type = stype;
-
-        
 
         if (n == "GerdLiebtKekse") {
             this.evolution = 5;
@@ -210,6 +202,14 @@ function Stockemon(type, entwicklung, level) {
                 this.name = stock.name;
             }
         }
+        this.loadValues(this.type, this.evolution, this.lvl);
+
+        this.atk = parseInt(satk);
+        this.def = parseInt(sdef);
+        this.luc = parseInt(sluc);
+        this.hp_max = parseInt(smax_hp);
+        this.heal();
+        this.epTillLvlUp = parseInt(septolvlup);
     };
 };
 
