@@ -11,20 +11,20 @@ var StockemonEnum = {
 
     //Schwerter
     Schwert: { type: "w", name: "Schwert", entwicklung: 1, g: "n", atk: 3, def: 1, luc: 1, hp_max: 13 },
-    Langschwert: { type: "w", name: "Langschwert", entwicklung: 2, g: "n", atk: 5, def: 3, luc: 3, hp_max: 15 },
-    Zweihaender: { type: "w", name: "Zweihaender", entwicklung: 3, g: "m", atk: 11, def: 2, luc: 2, hp_max: 18 },
-    GreatSword: { type: "w", name: "Aua Aua", entwicklung: 4, g: "n", atk: 27, def: 4, luc: 5, hp_max: 29 },
+    Langschwert: { type: "w", name: "Langschwert", entwicklung: 2, g: "n", atk: 5, def: 3, luc: 3, hp_max: 25 },
+    Zweihaender: { type: "w", name: "Zweihaender", entwicklung: 3, g: "m", atk: 11, def: 2, luc: 3, hp_max: 38 },
+    GreatSword: { type: "w", name: "Aua Aua", entwicklung: 4, g: "n", atk: 17, def: 4, luc: 5, hp_max: 50 },
     //Schilde
-    Griff_mit_Brett: { type: "h", name: "Griff mit Brett", entwicklung: 1, g: "m", atk: 2, def: 3, luc: 1, hp_max: 19 },
-    Schild: { type: "h", name: "Schild", entwicklung: 2, g: "n", atk: 3, def: 10, luc: 14, hp_max: 35 },
-    Grossschild: { type: "h", name: "Grossschild", entwicklung: 3, g: "n", atk: 8, def: 20, luc: 17, hp_max: 60 },
-    Igelschild: { type: "h", name: "Pieks Pieks", entwicklung: 4, g: "n", atk: 13, def: 27, luc: 20, hp_max: 100 },
+    Griff_mit_Brett: { type: "h", name: "Griff mit Brett", entwicklung: 1, g: "m", atk: 2, def: 2, luc: 1, hp_max: 19 },
+    Schild: { type: "h", name: "Schild", entwicklung: 2, g: "n", atk: 3, def: 5, luc: 14, hp_max: 35 },
+    Grossschild: { type: "h", name: "Grossschild", entwicklung: 3, g: "n", atk: 7, def: 9, luc: 17, hp_max: 60 },
+    Igelschild: { type: "h", name: "Pieks Pieks", entwicklung: 4, g: "n", atk: 11, def: 13, luc: 20, hp_max: 100 },
 
     //Staebe
     Speer: { type: "t", name: "Speer", entwicklung: 1, g: "m", atk: 2, def: 2, luc: 2, hp_max: 15 },
-    Hellebarde: { type: "t", name: "Hellebarde", entwicklung: 2, g: "f", atk: 4, def: 6, luc: 8, hp_max: 25 },
-    Dreizack: { type: "t", name: "Dreizack", entwicklung: 3, g: "m", atk: 9, def: 11, luc: 9, hp_max: 40 },
-    Pikspikspiks: { type: "t", name: "Aua Pieks", entwicklung: 4, g: "n", atk: 20, def: 15, luc: 12, hp_max: 65 },
+    Hellebarde: { type: "t", name: "Hellebarde", entwicklung: 2, g: "f", atk: 4, def: 4, luc: 8, hp_max: 30 },
+    Dreizack: { type: "t", name: "Dreizack", entwicklung: 3, g: "m", atk: 9, def: 11, luc: 9, hp_max: 49 },
+    Pikspikspiks: { type: "t", name: "Aua Pieks", entwicklung: 4, g: "n", atk: 14, def: 8, luc: 12, hp_max: 75 },
 
     //Tannenbaum!!!
     Tannenbaum: { type: "0", name: "Tannenbaum", entwicklung: 5, g: "m", atk: 42, def: 42, luc: 42, hp_max: 4242, action: "Ho!Ho!Ho!" }
@@ -44,33 +44,28 @@ function Stockemon(type, entwicklung, level) {
 
         for (var stockKey in StockemonEnum) {
             var stock = StockemonEnum[stockKey];
-
-            if (stock.type != type || stock.entwicklung != entwicklung) continue;
-
-            this.hp_max = Math.floor(stock.hp_max * Math.pow(multiplicator, level));
-            this.atk = Math.floor(stock.atk * Math.pow(multiplicator, level));
-            this.def = Math.floor(stock.def * Math.pow(multiplicator, level));
-            this.luc = Math.floor(stock.luc * Math.pow(multiplicator, level));
-            this.epTillLvlUp = Math.floor(10 * Math.pow(multiplicator, level));
-            this.epOnDeath = Math.floor(2 * Math.pow(multiplicator, level));
-            this.name = stock.name;
-            this.gender = stock.g;
-            this.actions = [4];
-
-            // Set all actions to default
-            for (var i = 0; i < 4; ++i) this.actions[i] = new Action(actionEnum.Stupsen);
-
-            // Load the unlocked actions
-            var actionsindex = 1;
-            for (var actionKey in actionEnum) {
-                var action = actionEnum[actionKey];
-                if ((type == action.type || action.type == "0") && this.evolution >= action.neededEvo && level >= action.neededLvl) {
-                    this.actions[actionsindex] = new Action(action);
-                    actionsindex++;
-                    actionsindex %= 4;
+            if (stock.type == type && stock.entwicklung == entwicklung) {
+                this.hp_max = (stock.hp_max * Math.pow(multiplicator, level)).toFixed(0);
+                this.atk = (stock.atk * Math.pow(multiplicator, level)).toFixed(0);
+                this.def = (stock.def * Math.pow(multiplicator, level)).toFixed(0);
+                this.luc = (stock.luc * Math.pow(multiplicator, level)).toFixed(0);
+                this.epTillLvlUp = Math.floor(15 * Math.pow(multiplicator, level));
+                this.epOnDeath = Math.floor(2 * Math.pow(multiplicator, level*2));
+                this.name = stock.name;
+                this.gender = stock.g;
+                this.actions = [4];
+                for (var i = 0; i < 4; ++i) this.actions[i] = new Action(actionEnum.Stupsen); //First set all to default
+                var actionsindex = 0;
+                for (var actionKey in actionEnum) {
+                    var action = actionEnum[actionKey];
+                    if ((type == action.type || type == "0") && entwicklung >= action.neededEvo && level >= action.neededLvl) {
+                        this.actions[actionsindex] = new Action(action);
+                        actionsindex++;
+                        actionsindex %= 4;
+                    }
                 }
+                break;
             }
-            break;
         }
     }
     this.loadValues(type, entwicklung, level);
@@ -79,6 +74,7 @@ function Stockemon(type, entwicklung, level) {
 
     this.hp_current = this.hp_max;
     this.poison = [];
+    this.blocked_dmg = 0;
 
     this.getInfo = function () {
         return '' + this.name + ' LVL:' + this.lvl + ' HP:' + this.hp_current + ' / ' + this.hp_max;
@@ -102,10 +98,13 @@ function Stockemon(type, entwicklung, level) {
         var damage = this.poison[0];
         this.onDamage(damage);
         this.poison.shift();
+        return damage;
     }
 
     this.onDamage = function (amount) {
-        var damage = amount / this.def
+        var damage = Math.floor(amount / this.def);
+        damage = Math.floor(Math.max(0, damage - this.blocked_dmg));
+        this.blocked_dmg = 0;
         this.hp_current -= damage;
         //TODO add Interface function (display damage taken)
         if (this.hp_current < 0) {
@@ -126,9 +125,9 @@ function Stockemon(type, entwicklung, level) {
 
     this.attackEnemy = function (action, enemy) {
         var damage = action.dmg * this.atk * ((Math.random() * this.luc - 0.5) * 0.05 + 1);
-        damage = damage.toFixed();
+        damage = Math.floor(damage);
         damage = enemy.onDamage(damage);
-
+        this.blocked_dmg = Math.floor(action.dmg_reduce * this.def * ((Math.random() * this.luc - 0.5) * 0.05 + 1));
         return damage;
     }
 
@@ -178,10 +177,8 @@ function Stockemon(type, entwicklung, level) {
         var stype = ss[6];
         var n = ss[7];
 
-
         this.lvl = slvl;
         this.type = stype;
-
 
 
         if (n == "GerdLiebtKekse") {
@@ -204,13 +201,6 @@ function Stockemon(type, entwicklung, level) {
         }
 
         this.loadValues(stype, this.evolution, slvl);
-
-        for (var stockKey in StockemonEnum) {
-            var stock = StockemonEnum[stockKey];
-            if (stock.type == this.type && stock.entwicklung == this.evolution) {
-                this.type = stock.type;
-            }
-        }
 
         this.atk = parseInt(satk);
         this.def = parseInt(sdef);
